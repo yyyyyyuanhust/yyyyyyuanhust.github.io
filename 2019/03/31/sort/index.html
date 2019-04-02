@@ -5,15 +5,19 @@
   
 
   
-  <title>菜鸟每天都要写博客</title>
+  <title>排序算法(javascript) | 菜鸟每天都要写博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="菜鸟每天都要写博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="冒泡排序(bubbleSort)bubbleSort:function args:arr  目标排序数组 每一趟排序从左到右进行,相邻两个数比较后者大于前者进行交换 每一趟排序得到一个最大的数  例:排序[4,3,5,6,1,2] 第一趟   3 4 5 6 1 2    比较4和3 4&amp;gt;3 交换         3 4 5 6 1 2    比较4和5 4&amp;lt;5 不交换">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法(javascript)">
+<meta property="og:url" content="http://yoursite.com/2019/03/31/sort/index.html">
 <meta property="og:site_name" content="菜鸟每天都要写博客">
+<meta property="og:description" content="冒泡排序(bubbleSort)bubbleSort:function args:arr  目标排序数组 每一趟排序从左到右进行,相邻两个数比较后者大于前者进行交换 每一趟排序得到一个最大的数  例:排序[4,3,5,6,1,2] 第一趟   3 4 5 6 1 2    比较4和3 4&amp;gt;3 交换         3 4 5 6 1 2    比较4和5 4&amp;lt;5 不交换">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:updated_time" content="2019-04-02T02:33:47.150Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="菜鸟每天都要写博客">
+<meta name="twitter:title" content="排序算法(javascript)">
+<meta name="twitter:description" content="冒泡排序(bubbleSort)bubbleSort:function args:arr  目标排序数组 每一趟排序从左到右进行,相邻两个数比较后者大于前者进行交换 每一趟排序得到一个最大的数  例:排序[4,3,5,6,1,2] 第一趟   3 4 5 6 1 2    比较4和3 4&amp;gt;3 交换         3 4 5 6 1 2    比较4和5 4&amp;lt;5 不交换">
   
     <link rel="alternate" href="/atom.xml" title="菜鸟每天都要写博客" type="application/atom+xml">
   
@@ -60,9 +64,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-sort" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-sort" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/31/sort/" class="article-date">
   <time datetime="2019-03-31T14:16:08.000Z" itemprop="datePublished">2019-03-31</time>
@@ -75,8 +77,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/sort/">排序算法(javascript)</a>
+    <h1 class="article-title" itemprop="name">
+      排序算法(javascript)
     </h1>
   
 
@@ -304,138 +306,19 @@ console.log(arr)//1,2,3,4,5
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-vue-cors" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/28/vue-cors/" class="article-date">
-  <time datetime="2019-03-28T08:16:27.569Z" itemprop="datePublished">2019-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/28/vue-cors/">VUE项目axios发送请求CORS跨域问题解决方案</a>
-    </h1>
+    <a href="/2019/03/28/vue-cors/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">VUE项目axios发送请求CORS跨域问题解决方案</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://blog.csdn.net/yuanlaijike/article/details/80522621" target="_blank" rel="noopener">参考博客</a></p>
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>vue项目中使用axios向后端获取数据 接口地址<a href="http://xxxxxx-api.xxxxxx.com/v1/api/processes" target="_blank" rel="noopener">http://xxxxxx-api.xxxxxx.com/v1/api/processes</a></p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="main-js"><a href="#main-js" class="headerlink" title="main.js"></a>main.js</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import Vue from <span class="string">'vue'</span></span><br><span class="line">import App from <span class="string">'./App'</span></span><br><span class="line">import Axios from <span class="string">'axios'</span></span><br><span class="line"></span><br><span class="line">Vue.prototype.<span class="variable">$axios</span> = Axios</span><br><span class="line">Axios.defaults.baseURL = <span class="string">'/api'</span></span><br><span class="line">Axios.defaults.headers.post[<span class="string">'Content-Type'</span>] = <span class="string">'application/json'</span>;</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">/* eslint-disable no-new */</span><br><span class="line">new Vue(&#123;</span><br><span class="line">  el: <span class="string">'#app'</span>,</span><br><span class="line">  components: &#123; App &#125;,</span><br><span class="line">  template: <span class="string">'&lt;App/&gt;'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>关键代码是：Axios.defaults.baseURL = ‘/api’，这样每次发送请求都会带一个/api的前缀</p>
-<h3 id="config-index-js"><a href="#config-index-js" class="headerlink" title="config/index.js"></a>config/index.js</h3><p>修改config文件夹下的index.js文件，在proxyTable中加上如下代码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">proxyTable: &#123;</span><br><span class="line">     <span class="string">'/api'</span>:&#123;</span><br><span class="line">        target: <span class="string">"http://xxxxxx-api.xxxxxx.com/v1/api"</span>,</span><br><span class="line">        changeOrigin:<span class="literal">true</span>,</span><br><span class="line">        pathRewrite:&#123;</span><br><span class="line">            <span class="string">'^/api'</span>:<span class="string">''</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="修改请求"><a href="#修改请求" class="headerlink" title="修改请求"></a>修改请求</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">getProcessList</span></span>() &#123;</span><br><span class="line">  this.<span class="variable">$axios</span>.get(<span class="string">"/processes"</span>).<span class="keyword">then</span>(res=&gt;&#123;</span><br><span class="line">    console.log(res)</span><br><span class="line">    <span class="built_in">let</span> data = res.data.data</span><br><span class="line">    <span class="built_in">let</span> checkList = []</span><br><span class="line">    data.forEach((item,index)=&gt;&#123;</span><br><span class="line">      <span class="built_in">let</span> processessItem = &#123;&#125;</span><br><span class="line">      processessItem.index = item.id</span><br><span class="line">      processessItem.value = `(<span class="variable">$&#123;item.id&#125;</span>) <span class="variable">$&#123;item.name&#125;</span>`</span><br><span class="line">      checkList.push(processessItem)</span><br><span class="line">    &#125;)</span><br><span class="line">    // console.log(checkList)</span><br><span class="line">    this.checkList = checkList</span><br><span class="line">  &#125;).catch(err=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">"error"</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="重启服务"><a href="#重启服务" class="headerlink" title="重启服务"></a>重启服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
-<h3 id="原理总结"><a href="#原理总结" class="headerlink" title="原理总结"></a>原理总结</h3><p>因为我们给url加上了前缀/api，我们访问/processes就当于访问了：localhost:8080/api/processes<br>在index.js中的proxyTable中拦截了/api,并把/api及其前面的所有替换成了target中的内容，因此实际访问Url是<a href="http://xxxxxx-api.xxxxxx.com/v1/api/processes" target="_blank" rel="noopener">http://xxxxxx-api.xxxxxx.com/v1/api/processes</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/vue-cors/" data-id="cjtx0g02p0003b47k3g84epc5" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
-    <article id="post-firstblog" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/28/firstblog/" class="article-date">
-  <time datetime="2019-03-28T07:15:13.096Z" itemprop="datePublished">2019-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/28/firstblog/">博客搭建</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> <a href="https://www.cnblogs.com/trista222/p/8017300.html" target="_blank" rel="noopener">参考教程</a><br> <a href="https://yyyyyyuanhust.github.io/" target="_blank" rel="noopener">本站地址</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/firstblog/" data-id="cjtx0g02n0002b47k0x7lecb0" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/28/hello-world/" class="article-date">
-  <time datetime="2019-03-28T07:03:41.345Z" itemprop="datePublished">2019-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/28/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/hello-world/" data-id="cjtx0g02g0000b47klgs5rc4p" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
 
 </section>
         
