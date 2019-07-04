@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>闭包 | 菜鸟每天都要写博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="理解闭包1、如何产生闭包?     当一个嵌套的内部函数 引用了嵌套外部函数的局部变量时 产生闭包 2、闭包的理解     *第一种:嵌套的内部函数     *第二种:包含被引用变量(函数)的对象 3、产生闭包的条件     *函数嵌套     *内部函数引用了外部函数的数据(变量、函数)     *执行外部函数 4、闭包的作用     *使用函数内部的局部变量在函数执行完后,仍存活在内存中(延长">
+<meta property="og:type" content="article">
+<meta property="og:title" content="闭包">
+<meta property="og:url" content="http://yoursite.com/2019/04/07/js-closure/index.html">
+<meta property="og:site_name" content="菜鸟每天都要写博客">
+<meta property="og:description" content="理解闭包1、如何产生闭包?     当一个嵌套的内部函数 引用了嵌套外部函数的局部变量时 产生闭包 2、闭包的理解     *第一种:嵌套的内部函数     *第二种:包含被引用变量(函数)的对象 3、产生闭包的条件     *函数嵌套     *内部函数引用了外部函数的数据(变量、函数)     *执行外部函数 4、闭包的作用     *使用函数内部的局部变量在函数执行完后,仍存活在内存中(延长">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:updated_time" content="2019-07-04T05:51:08.990Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="闭包">
+<meta name="twitter:description" content="理解闭包1、如何产生闭包?     当一个嵌套的内部函数 引用了嵌套外部函数的局部变量时 产生闭包 2、闭包的理解     *第一种:嵌套的内部函数     *第二种:包含被引用变量(函数)的对象 3、产生闭包的条件     *函数嵌套     *内部函数引用了外部函数的数据(变量、函数)     *执行外部函数 4、闭包的作用     *使用函数内部的局部变量在函数执行完后,仍存活在内存中(延长">
+  
+    <link rel="alternate" href="/atom.xml" title="菜鸟每天都要写博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟每天都要写博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-js-closure" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/07/js-closure/" class="article-date">
+  <time datetime="2019-04-07T02:48:35.000Z" itemprop="datePublished">2019-04-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      闭包
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="理解闭包"><a href="#理解闭包" class="headerlink" title="理解闭包"></a>理解闭包</h2><pre><code>1、如何产生闭包?
+    当一个嵌套的内部函数 引用了嵌套外部函数的局部变量时 产生闭包
+2、闭包的理解
+    *第一种:嵌套的内部函数
+    *第二种:包含被引用变量(函数)的对象
+3、产生闭包的条件
+    *函数嵌套
+    *内部函数引用了外部函数的数据(变量、函数)
+    *执行外部函数
+4、闭包的作用
+    *使用函数内部的局部变量在函数执行完后,仍存活在内存中(延长局部变量的生命周期)
+    *在函数外部可以操作(读写)函数内部的数据(变量/函数)
+5、闭包的生命周期
+    *产生:在嵌套内部函数定义执行完成时产生
+    *死亡:在嵌套内部函数成为垃圾对象时
+    *f = null
+</code></pre><h3 id="例如"><a href="#例如" class="headerlink" title="例如"></a>例如</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn1</span></span>() &#123;</span><br><span class="line">	var a = 2;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;//执行函数定义就会产生闭包(不用调用内部函数)</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">f1()</span><br></pre></td></tr></table></figure>
+<h2 id="常见的闭包"><a href="#常见的闭包" class="headerlink" title="常见的闭包"></a>常见的闭包</h2><pre><code>1、将函数作为另一个函数的返回值
+2、将函数作为实参传给另一个函数调用
+</code></pre><h3 id="例-将函数作为另一个函数的返回值"><a href="#例-将函数作为另一个函数的返回值" class="headerlink" title="例(将函数作为另一个函数的返回值)"></a>例(将函数作为另一个函数的返回值)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">f1</span></span>() &#123;</span><br><span class="line">	var a = 2</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;</span><br><span class="line">		a++</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f3</span></span>() &#123;</span><br><span class="line">		a--</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		f2:f2,</span><br><span class="line">		f3:f3</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var f = f1()</span><br><span class="line">f.f2() //3</span><br><span class="line">f.f2() //4</span><br><span class="line">f.f3() //3</span><br><span class="line">f.f3() //2</span><br><span class="line">f.f3() //1</span><br></pre></td></tr></table></figure>
+<h2 id="常见的闭包-1"><a href="#常见的闭包-1" class="headerlink" title="常见的闭包"></a>常见的闭包</h2><pre><code>1、将函数作为另一个函数的返回值
+2、将函数作为实参传给另一个函数调用
+</code></pre><h3 id="例-将函数作为另一个函数的返回值-1"><a href="#例-将函数作为另一个函数的返回值-1" class="headerlink" title="例(将函数作为另一个函数的返回值)"></a>例(将函数作为另一个函数的返回值)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">f1</span></span>() &#123;</span><br><span class="line">	var a = 2</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;</span><br><span class="line">		a++</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f3</span></span>() &#123;</span><br><span class="line">		a--</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		f2:f2,</span><br><span class="line">		f3:f3</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var f = f1()</span><br><span class="line">f.f2() //3</span><br><span class="line">f.f2() //4</span><br><span class="line">f.f3() //3</span><br><span class="line">f.f3() //2</span><br><span class="line">f.f3() //1</span><br></pre></td></tr></table></figure>
+<h3 id="例-将函数作为实参传给另一个函数调用"><a href="#例-将函数作为实参传给另一个函数调用" class="headerlink" title="例(将函数作为实参传给另一个函数调用)"></a>例(将函数作为实参传给另一个函数调用)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> showDelay(msg,time) &#123;</span><br><span class="line">	setTimeout(<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(msg)  //内部函数引用了外部函数的局部变量msg</span><br><span class="line">	&#125;,time)</span><br><span class="line">&#125;</span><br><span class="line">showDelay(<span class="string">"abc"</span>,2000)</span><br></pre></td></tr></table></figure>
+<h2 id="闭包构建JS模块-应用"><a href="#闭包构建JS模块-应用" class="headerlink" title="闭包构建JS模块(应用)"></a>闭包构建JS模块(应用)</h2><pre><code>创建具有特定功能的js文件
+将所有的数据和功能封装在一个函数内部(私有化)
+只向外暴露一个包含n个方法的对象或函数
+模块的使用者,只需要通过模块暴露的对象调用方法来实现对应功能
+</code></pre><h4 id="例"><a href="#例" class="headerlink" title="例"></a>例</h4><h6 id="module-js"><a href="#module-js" class="headerlink" title="module.js"></a>module.js</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">//第一种写法</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">myModule</span></span>() &#123;</span><br><span class="line">	var msg = <span class="string">"My Message"</span></span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doSomething</span></span>() &#123;</span><br><span class="line">		console.log(msg.toUpperCase())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doOtherthing</span></span>() &#123;</span><br><span class="line">		console.log(msg.toLowerCase())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		doSomething:doSomething,</span><br><span class="line">		doOtherthing:doOtherthing</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//第二种写法</span><br><span class="line">(<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	var msg = <span class="string">"My Message"</span></span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doSomething</span></span>() &#123;</span><br><span class="line">		console.log(msg.toUpperCase())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doOtherthing</span></span>() &#123;</span><br><span class="line">		console.log(msg.toLowerCase())</span><br><span class="line">	&#125;</span><br><span class="line">	window.myModule2 = &#123;</span><br><span class="line">		doSomething:doSomething,</span><br><span class="line">		doOtherthing:doOtherthing</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<h6 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span> src=<span class="string">"module.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">//第一种写法的调用</span><br><span class="line">var fn = myModule()</span><br><span class="line">fn.doSomething()</span><br><span class="line">fn.doOtherthing()</span><br><span class="line"></span><br><span class="line">//第二种写法的调用</span><br><span class="line">myModule2.doSomething()</span><br><span class="line">myModule2.doOtherthing()</span><br></pre></td></tr></table></figure>
+<h2 id="闭包的缺点与解决方案"><a href="#闭包的缺点与解决方案" class="headerlink" title="闭包的缺点与解决方案"></a>闭包的缺点与解决方案</h2><pre><code>缺点
+    1、函数执行完后,函数内部的局部变量没有释放,占用内存时间会变长
+    2、造成内存泄露
+解决方案
+    1、能不用就不用闭包
+    2、及时释放
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fa1</span></span>() &#123;</span><br><span class="line">	var arr = new Array(10000)</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">fa2</span></span>() &#123;</span><br><span class="line">		console.log(arr.length)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> fa2</span><br><span class="line">&#125;</span><br><span class="line">var res = fa1()</span><br><span class="line">res()</span><br><span class="line">res = null //释放</span><br></pre></td></tr></table></figure>
+<h2 id="内存溢出与内存泄露"><a href="#内存溢出与内存泄露" class="headerlink" title="内存溢出与内存泄露"></a>内存溢出与内存泄露</h2><pre><code>内存溢出
+    内存溢出是一种程勋运行出现的错误
+    当程序运行需要的内存超过了当前剩余内存是,跑出内存溢出错误
+内存泄露
+    占用的内存没有及时释放
+    内存泄露积累过多容易产生内存溢出
+    常见的内存泄露
+        意外的全局变量
+        没有及时清理的计时器或回调函数
+        闭包
+</code></pre><h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><h4 id="1"><a href="#1" class="headerlink" title="1"></a>1</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">var name = <span class="string">"The Window"</span></span><br><span class="line">var object = &#123;</span><br><span class="line">	name:<span class="string">"My Object"</span>,</span><br><span class="line">	getName:<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		<span class="built_in">return</span> <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">			<span class="built_in">return</span> this.name</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(object.getName()())//? The Window</span><br><span class="line"></span><br><span class="line">var name2 = <span class="string">"The Winodw"</span></span><br><span class="line">var object2 = &#123;</span><br><span class="line">	name:<span class="string">"My Object"</span>,</span><br><span class="line">	getName:<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		var that = this</span><br><span class="line">		<span class="built_in">return</span> <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">			<span class="built_in">return</span> that.name</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(object2.getName()())//? My Object</span><br></pre></td></tr></table></figure>
+<h4 id="2"><a href="#2" class="headerlink" title="2"></a>2</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fun(n,o) &#123;</span><br><span class="line">	console.log(o)</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		fun:<span class="keyword">function</span>(m) &#123;</span><br><span class="line">			<span class="built_in">return</span> fun(m,n)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/07/js-closure/" data-id="cjxodhbe00005i47kfi2o2t4g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/05/01/algorithm-windowString/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          窗口最短连续字符串
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/04/03/js-prototype/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">原型</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/05/01/algorithm-windowString/">窗口最短连续字符串</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/07/js-closure/">闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/03/js-prototype/">原型</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/03/js-function/">函数</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/js-context/">变量提升、执行上下文、作用域</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 yuan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>函数 | 菜鸟每天都要写博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="this12345678910111213141516171819202122232425262728293031323334353637383940414243/*	1、this是什么？	  *任何函数本质上都是通过某个对象来调用的,如果没有直接指定就是window	  *所有函数内部都有一个变量this	  *它的值是调用函数的当前对象	2、如何确定this的值?	  *test():wind">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数">
+<meta property="og:url" content="http://yoursite.com/2019/04/03/js-function/index.html">
+<meta property="og:site_name" content="菜鸟每天都要写博客">
+<meta property="og:description" content="this12345678910111213141516171819202122232425262728293031323334353637383940414243/*	1、this是什么？	  *任何函数本质上都是通过某个对象来调用的,如果没有直接指定就是window	  *所有函数内部都有一个变量this	  *它的值是调用函数的当前对象	2、如何确定this的值?	  *test():wind">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:updated_time" content="2019-07-04T05:51:18.752Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="函数">
+<meta name="twitter:description" content="this12345678910111213141516171819202122232425262728293031323334353637383940414243/*	1、this是什么？	  *任何函数本质上都是通过某个对象来调用的,如果没有直接指定就是window	  *所有函数内部都有一个变量this	  *它的值是调用函数的当前对象	2、如何确定this的值?	  *test():wind">
+  
+    <link rel="alternate" href="/atom.xml" title="菜鸟每天都要写博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟每天都要写博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-js-function" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/03/js-function/" class="article-date">
+  <time datetime="2019-04-03T01:36:00.000Z" itemprop="datePublished">2019-04-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      函数
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">	1、this是什么？</span><br><span class="line">	  *任何函数本质上都是通过某个对象来调用的,如果没有直接指定就是window</span><br><span class="line">	  *所有函数内部都有一个变量this</span><br><span class="line">	  *它的值是调用函数的当前对象</span><br><span class="line">	2、如何确定this的值?</span><br><span class="line">	  *<span class="built_in">test</span>():window</span><br><span class="line">	  *p.test():p</span><br><span class="line">	  *new <span class="built_in">test</span>():新创建的对象</span><br><span class="line">	  *p.call(obj):obj</span><br><span class="line">*/</span><br><span class="line"><span class="keyword">function</span> Person(color) &#123;</span><br><span class="line">	console.log(this);</span><br><span class="line">	this.color = color;</span><br><span class="line">	this.getColor = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">		<span class="built_in">return</span> this.color</span><br><span class="line">	&#125;</span><br><span class="line">	this.setColor = <span class="keyword">function</span>(color) &#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">		this.color = color;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person(<span class="string">"red"</span>);   //this?   window</span><br><span class="line"></span><br><span class="line">var p = new Person(<span class="string">"yellow"</span>);     //this?  Person</span><br><span class="line"></span><br><span class="line">var obj = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">p.setColor.call(obj,<span class="string">"black"</span>);     //this?    obj</span><br><span class="line"></span><br><span class="line">var <span class="built_in">test</span> = p.setColor;</span><br><span class="line"><span class="built_in">test</span>();    //this?      window</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fun1</span></span>() &#123;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">fun2</span></span>() &#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;</span><br><span class="line">	fun2(); //this?     window</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun1();</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/03/js-function/" data-id="cjxodhbe8000bi47kv3rn1ym8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/04/03/js-prototype/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          原型
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/04/02/js-context/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">变量提升、执行上下文、作用域</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/05/01/algorithm-windowString/">窗口最短连续字符串</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/07/js-closure/">闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/03/js-prototype/">原型</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/03/js-function/">函数</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/js-context/">变量提升、执行上下文、作用域</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 yuan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

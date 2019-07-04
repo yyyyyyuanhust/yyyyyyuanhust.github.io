@@ -62,12 +62,419 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-algorithm-windowString" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/01/algorithm-windowString/" class="article-date">
+  <time datetime="2019-05-01T07:50:52.000Z" itemprop="datePublished">2019-05-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/01/algorithm-windowString/">窗口最短连续字符串</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>窗口最小子串<br>给两个字符串s1和s2<br>求s1中最短连续子串 要求包含s2中的所有字符<br>例如s1=”adobecodebanc” s2=”abc”<br>即求”adobecodebanc”中包含”a”、”b”、”c”的最短连续子串<br>结果是”banc” 长度是4</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>很显然需要进行扫描抽取子串和比较 为此需要一个辅助函数f(a,b)<br>用来检测a中是否包含b的所有字符<br>可以设计一下这个匹配函数:<br>把a叫做[目标字符串] b叫做[比较字符串]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function test(a,b)&#123;</span><br><span class="line">	//扫描[对比字符串]获取每一个字符拿去比较</span><br><span class="line">	for(let i=0;i&lt;b.length;i++)&#123;</span><br><span class="line">		//当前取到字符是letter</span><br><span class="line">		let letter = b.charAt(i)</span><br><span class="line">		//a里有没有letter呢？</span><br><span class="line">		if(a.indexOf(letter)!=-1)&#123;</span><br><span class="line">			//有~而且位置是a.indexOf(letter)</span><br><span class="line">			//把这个地方的字符去掉 </span><br><span class="line">			a=a.replace(&quot;letter&quot;,&quot;&quot;)</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			//没有~直接出局</span><br><span class="line">			return -1</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	//循环结束了也没有出局 证明匹配成功了</span><br><span class="line">	return 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>辅助函数搞定了 接下来继续考虑<br>对于目标字符串”adobecodebanc”<br>用i从左向右扫描 使用一个变量current记录当前的子串<br>设置一个begin开始指向0位置<br>那么begin和i包含区域为当前连续子串current<br>i经过一次for自增1<br>那么begin何时增加呢?<br>当current中包含了[比较字符串]中的全部元素<br>且current去掉第一个字符串仍然包含[比较字符串]中的全部元素<br>所以这里可以写成while(current去掉第一位包含所有[比较字符串]){begin++ current=current去掉第一个字符}<br>对每次循环的current进行一次检测 若其长度最短 则保存到结果中<br>循环结束后结果中的字符串即为所求</p>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">辅助比较函数</span><br><span class="line">参数:str1=&gt;[目标串] str2=&gt;[比较串]</span><br><span class="line"><span class="keyword">function</span> <span class="built_in">test</span>(str1,str2)&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> i=0;i&lt;str2.length;i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(str1.indexOf(str2.charAt(i))!=-1)&#123;</span><br><span class="line">			<span class="built_in">let</span> letter = str2.charAt(i)</span><br><span class="line">			str1 = str1.replace(letter,<span class="string">""</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="built_in">return</span> <span class="literal">false</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">主要函数</span><br><span class="line">参数:str1=&gt;[目标串] str2=&gt;[比较串]</span><br><span class="line"><span class="keyword">function</span> win(str1,str2) &#123;</span><br><span class="line">	<span class="built_in">let</span> min = str1.length</span><br><span class="line">	<span class="built_in">let</span> res = <span class="string">""</span></span><br><span class="line">	<span class="built_in">let</span> begin = 0</span><br><span class="line">	<span class="built_in">let</span> current = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> i=0;i&lt;str1.length;i++)&#123;</span><br><span class="line">		current = current+str1.charAt(i)</span><br><span class="line">		<span class="keyword">while</span>(<span class="built_in">test</span>(current.substr(1),str2))&#123;</span><br><span class="line">			begin++</span><br><span class="line">			current = current.substr(1)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">test</span>(current,str2))&#123;</span><br><span class="line">			<span class="keyword">if</span>(current.length&lt;min)&#123;</span><br><span class="line">				min = current.length</span><br><span class="line">				res = current</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/05/01/algorithm-windowString/" data-id="cjxodhbdr0001i47ks1tydiv2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-js-closure" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/07/js-closure/" class="article-date">
+  <time datetime="2019-04-07T02:48:35.000Z" itemprop="datePublished">2019-04-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/07/js-closure/">闭包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="理解闭包"><a href="#理解闭包" class="headerlink" title="理解闭包"></a>理解闭包</h2><pre><code>1、如何产生闭包?
+    当一个嵌套的内部函数 引用了嵌套外部函数的局部变量时 产生闭包
+2、闭包的理解
+    *第一种:嵌套的内部函数
+    *第二种:包含被引用变量(函数)的对象
+3、产生闭包的条件
+    *函数嵌套
+    *内部函数引用了外部函数的数据(变量、函数)
+    *执行外部函数
+4、闭包的作用
+    *使用函数内部的局部变量在函数执行完后,仍存活在内存中(延长局部变量的生命周期)
+    *在函数外部可以操作(读写)函数内部的数据(变量/函数)
+5、闭包的生命周期
+    *产生:在嵌套内部函数定义执行完成时产生
+    *死亡:在嵌套内部函数成为垃圾对象时
+    *f = null
+</code></pre><h3 id="例如"><a href="#例如" class="headerlink" title="例如"></a>例如</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn1</span></span>() &#123;</span><br><span class="line">	var a = 2;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;//执行函数定义就会产生闭包(不用调用内部函数)</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">f1()</span><br></pre></td></tr></table></figure>
+<h2 id="常见的闭包"><a href="#常见的闭包" class="headerlink" title="常见的闭包"></a>常见的闭包</h2><pre><code>1、将函数作为另一个函数的返回值
+2、将函数作为实参传给另一个函数调用
+</code></pre><h3 id="例-将函数作为另一个函数的返回值"><a href="#例-将函数作为另一个函数的返回值" class="headerlink" title="例(将函数作为另一个函数的返回值)"></a>例(将函数作为另一个函数的返回值)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">f1</span></span>() &#123;</span><br><span class="line">	var a = 2</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;</span><br><span class="line">		a++</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f3</span></span>() &#123;</span><br><span class="line">		a--</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		f2:f2,</span><br><span class="line">		f3:f3</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var f = f1()</span><br><span class="line">f.f2() //3</span><br><span class="line">f.f2() //4</span><br><span class="line">f.f3() //3</span><br><span class="line">f.f3() //2</span><br><span class="line">f.f3() //1</span><br></pre></td></tr></table></figure>
+<h2 id="常见的闭包-1"><a href="#常见的闭包-1" class="headerlink" title="常见的闭包"></a>常见的闭包</h2><pre><code>1、将函数作为另一个函数的返回值
+2、将函数作为实参传给另一个函数调用
+</code></pre><h3 id="例-将函数作为另一个函数的返回值-1"><a href="#例-将函数作为另一个函数的返回值-1" class="headerlink" title="例(将函数作为另一个函数的返回值)"></a>例(将函数作为另一个函数的返回值)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">f1</span></span>() &#123;</span><br><span class="line">	var a = 2</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;</span><br><span class="line">		a++</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f3</span></span>() &#123;</span><br><span class="line">		a--</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		f2:f2,</span><br><span class="line">		f3:f3</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var f = f1()</span><br><span class="line">f.f2() //3</span><br><span class="line">f.f2() //4</span><br><span class="line">f.f3() //3</span><br><span class="line">f.f3() //2</span><br><span class="line">f.f3() //1</span><br></pre></td></tr></table></figure>
+<h3 id="例-将函数作为实参传给另一个函数调用"><a href="#例-将函数作为实参传给另一个函数调用" class="headerlink" title="例(将函数作为实参传给另一个函数调用)"></a>例(将函数作为实参传给另一个函数调用)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> showDelay(msg,time) &#123;</span><br><span class="line">	setTimeout(<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(msg)  //内部函数引用了外部函数的局部变量msg</span><br><span class="line">	&#125;,time)</span><br><span class="line">&#125;</span><br><span class="line">showDelay(<span class="string">"abc"</span>,2000)</span><br></pre></td></tr></table></figure>
+<h2 id="闭包构建JS模块-应用"><a href="#闭包构建JS模块-应用" class="headerlink" title="闭包构建JS模块(应用)"></a>闭包构建JS模块(应用)</h2><pre><code>创建具有特定功能的js文件
+将所有的数据和功能封装在一个函数内部(私有化)
+只向外暴露一个包含n个方法的对象或函数
+模块的使用者,只需要通过模块暴露的对象调用方法来实现对应功能
+</code></pre><h4 id="例"><a href="#例" class="headerlink" title="例"></a>例</h4><h6 id="module-js"><a href="#module-js" class="headerlink" title="module.js"></a>module.js</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">//第一种写法</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">myModule</span></span>() &#123;</span><br><span class="line">	var msg = <span class="string">"My Message"</span></span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doSomething</span></span>() &#123;</span><br><span class="line">		console.log(msg.toUpperCase())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doOtherthing</span></span>() &#123;</span><br><span class="line">		console.log(msg.toLowerCase())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		doSomething:doSomething,</span><br><span class="line">		doOtherthing:doOtherthing</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//第二种写法</span><br><span class="line">(<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	var msg = <span class="string">"My Message"</span></span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doSomething</span></span>() &#123;</span><br><span class="line">		console.log(msg.toUpperCase())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doOtherthing</span></span>() &#123;</span><br><span class="line">		console.log(msg.toLowerCase())</span><br><span class="line">	&#125;</span><br><span class="line">	window.myModule2 = &#123;</span><br><span class="line">		doSomething:doSomething,</span><br><span class="line">		doOtherthing:doOtherthing</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<h6 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span> src=<span class="string">"module.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">//第一种写法的调用</span><br><span class="line">var fn = myModule()</span><br><span class="line">fn.doSomething()</span><br><span class="line">fn.doOtherthing()</span><br><span class="line"></span><br><span class="line">//第二种写法的调用</span><br><span class="line">myModule2.doSomething()</span><br><span class="line">myModule2.doOtherthing()</span><br></pre></td></tr></table></figure>
+<h2 id="闭包的缺点与解决方案"><a href="#闭包的缺点与解决方案" class="headerlink" title="闭包的缺点与解决方案"></a>闭包的缺点与解决方案</h2><pre><code>缺点
+    1、函数执行完后,函数内部的局部变量没有释放,占用内存时间会变长
+    2、造成内存泄露
+解决方案
+    1、能不用就不用闭包
+    2、及时释放
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fa1</span></span>() &#123;</span><br><span class="line">	var arr = new Array(10000)</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">fa2</span></span>() &#123;</span><br><span class="line">		console.log(arr.length)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> fa2</span><br><span class="line">&#125;</span><br><span class="line">var res = fa1()</span><br><span class="line">res()</span><br><span class="line">res = null //释放</span><br></pre></td></tr></table></figure>
+<h2 id="内存溢出与内存泄露"><a href="#内存溢出与内存泄露" class="headerlink" title="内存溢出与内存泄露"></a>内存溢出与内存泄露</h2><pre><code>内存溢出
+    内存溢出是一种程勋运行出现的错误
+    当程序运行需要的内存超过了当前剩余内存是,跑出内存溢出错误
+内存泄露
+    占用的内存没有及时释放
+    内存泄露积累过多容易产生内存溢出
+    常见的内存泄露
+        意外的全局变量
+        没有及时清理的计时器或回调函数
+        闭包
+</code></pre><h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><h4 id="1"><a href="#1" class="headerlink" title="1"></a>1</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">var name = <span class="string">"The Window"</span></span><br><span class="line">var object = &#123;</span><br><span class="line">	name:<span class="string">"My Object"</span>,</span><br><span class="line">	getName:<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		<span class="built_in">return</span> <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">			<span class="built_in">return</span> this.name</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(object.getName()())//? The Window</span><br><span class="line"></span><br><span class="line">var name2 = <span class="string">"The Winodw"</span></span><br><span class="line">var object2 = &#123;</span><br><span class="line">	name:<span class="string">"My Object"</span>,</span><br><span class="line">	getName:<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		var that = this</span><br><span class="line">		<span class="built_in">return</span> <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">			<span class="built_in">return</span> that.name</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(object2.getName()())//? My Object</span><br></pre></td></tr></table></figure>
+<h4 id="2"><a href="#2" class="headerlink" title="2"></a>2</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fun(n,o) &#123;</span><br><span class="line">	console.log(o)</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		fun:<span class="keyword">function</span>(m) &#123;</span><br><span class="line">			<span class="built_in">return</span> fun(m,n)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/07/js-closure/" data-id="cjxodhbe00005i47kfi2o2t4g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="n &#39;js_prototype&#39; hexo n n-js-prototype" class="article article-type-n &#39;js_prototype&#39; hexo n n" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/03/js-prototype/" class="article-date">
+  <time datetime="2019-04-03T03:30:11.000Z" itemprop="datePublished">2019-04-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/03/js-prototype/">原型</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2019/04/03/js-prototype/1.png" alt="avatar"></p>
+<h2 id="1-原型"><a href="#1-原型" class="headerlink" title="1 原型"></a>1 原型</h2><h3 id="1-1-函数的prototype属性"><a href="#1-1-函数的prototype属性" class="headerlink" title="1.1 函数的prototype属性"></a>1.1 函数的prototype属性</h3><pre><code>每个函数都有一个prototype属性,默认指向一个Object空对象(原型对象)
+原型对象有一个constructor属性,指向函数对象
+</code></pre><h3 id="1-2-给原型对象添加属性-一般是方法"><a href="#1-2-给原型对象添加属性-一般是方法" class="headerlink" title="1.2 给原型对象添加属性(一般是方法)"></a>1.2 给原型对象添加属性(一般是方法)</h3><pre><code>作用:函数的所有实例对象自动拥有原型中的属性
+</code></pre><h3 id="1-3-代码"><a href="#1-3-代码" class="headerlink" title="1.3 代码"></a>1.3 代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//每个函数都有一个prototype属性,默认指向一个Object空对象(原型对象)</span><br><span class="line">console.log(Date.prototype) //? </span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">F</span></span>()&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">console.log(F.prototype) //? 空对象(默认)</span><br><span class="line"></span><br><span class="line">//给原型对象添加属性(一般是方法) 实例对象可以访问</span><br><span class="line">F.prototype.test = <span class="function"><span class="title">function</span></span>()&#123;</span><br><span class="line">	console.log(<span class="string">"test"</span>)</span><br><span class="line">&#125;</span><br><span class="line">console.log(F.prototype)</span><br><span class="line"></span><br><span class="line">var f = new F()</span><br><span class="line">f.test()   //<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-显式原型和隐式原型"><a href="#2-显式原型和隐式原型" class="headerlink" title="2 显式原型和隐式原型"></a>2 显式原型和隐式原型</h2><h3 id="2-1解释"><a href="#2-1解释" class="headerlink" title="2.1解释"></a>2.1解释</h3><pre><code>函数的prototype属性:在定义函数时自动添加,默认值是一个空Object对象
+
+对象的__proto__属性:创建对象时自动添加,默认值是构造函数的prototype属性值
+
+写代码时直接操作显式原型,但不能直接操作隐式原型    
+</code></pre><h3 id="2-2代码"><a href="#2-2代码" class="headerlink" title="2.2代码"></a>2.2代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Fn</span></span>()&#123;   //隐藏执行了 this.prototype = &#123;&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">//1、每个函数都有一个prototype属性,默认指向一个Object空对象(原型对象)</span><br><span class="line">console.log(Fn.prototype)</span><br><span class="line"></span><br><span class="line">//2、每个实例对象都有一个__proto__ 称为隐式原型</span><br><span class="line">var fn = new Fn() //隐藏执行了 this.__proto__ = Fn.prototype</span><br><span class="line">console.log(fn.__proto__)</span><br><span class="line">//3、对象的隐式原型的值为其对应构造函数的显示原型的值</span><br><span class="line">console.log(Fn.prototype === fn.__proto__)  //<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-原型链"><a href="#3-原型链" class="headerlink" title="3 原型链"></a>3 原型链</h2><h3 id="3-1解释"><a href="#3-1解释" class="headerlink" title="3.1解释"></a>3.1解释</h3><pre><code>访问一个对象的属性时
+  先在自身属性中查找,找到返回
+  如果没有,再沿着__proto__这条链向上查找,找到返回
+  如果最终没找到,返回undefined
+别名:隐式原型链
+作用:查找对象的属性(方法)
+</code></pre><h3 id="3-2代码"><a href="#3-2代码" class="headerlink" title="3.2代码"></a>3.2代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">F1</span></span>() &#123;</span><br><span class="line">	this.test1 = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(<span class="string">"test1"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">F1.prototype.test2 = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	console.log(<span class="string">"test2"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var f1 = new F1()</span><br><span class="line">f1.test1()</span><br><span class="line">f1.test2()</span><br><span class="line">console.log(f1.toString())</span><br><span class="line">// f1.test3()</span><br><span class="line">console.log(f1)</span><br></pre></td></tr></table></figure>
+<h2 id="4-注意"><a href="#4-注意" class="headerlink" title="4 注意"></a>4 注意</h2><h4 id="4-1-函数的显式原型指向对象默认是空Object实例对象-Object是个例外"><a href="#4-1-函数的显式原型指向对象默认是空Object实例对象-Object是个例外" class="headerlink" title="4.1 函数的显式原型指向对象默认是空Object实例对象(Object是个例外)"></a>4.1 函数的显式原型指向对象默认是空Object实例对象(Object是个例外)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">console.log(F1.prototype instanceof Object)//<span class="literal">true</span></span><br><span class="line">console.log(Object.prototype instanceof Object)//<span class="literal">false</span></span><br><span class="line">console.log(Function.prototype instanceof Object)//<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-2-所有函数都是Funtion的实例-包括它本身"><a href="#4-2-所有函数都是Funtion的实例-包括它本身" class="headerlink" title="4.2 所有函数都是Funtion的实例,包括它本身"></a>4.2 所有函数都是Funtion的实例,包括它本身</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Function.__proto__ === Function.prototype)//<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-3-Object的原型对象是原型链的尽头"><a href="#4-3-Object的原型对象是原型链的尽头" class="headerlink" title="4.3 Object的原型对象是原型链的尽头"></a>4.3 Object的原型对象是原型链的尽头</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object.prototype.__proto__)//null</span><br></pre></td></tr></table></figure>
+<h2 id="5-原型链查找对象属性"><a href="#5-原型链查找对象属性" class="headerlink" title="5    原型链查找对象属性"></a>5    原型链查找对象属性</h2><h4 id="5-1-如何查找"><a href="#5-1-如何查找" class="headerlink" title="5.1 如何查找"></a>5.1 如何查找</h4><pre><code>1、读取对象属性值时,会自动到原型链中查找
+2、设置对象的属性值时,不查找原型链,如果当前对象中没有此属,直接添加此属性并设置其值
+3、方法一般定义在原型中,属性一般打通过构造函数定义在对象本身上
+</code></pre><h4 id="5-2-代码举例"><a href="#5-2-代码举例" class="headerlink" title="5.2 代码举例"></a>5.2 代码举例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">F2</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">F2.prototype.a = <span class="string">"aaa"</span></span><br><span class="line">var f2 = new F2()</span><br><span class="line">console.log(f2)</span><br><span class="line"></span><br><span class="line">var f3 = new F2()</span><br><span class="line">console.log(f3.a)//aaa</span><br><span class="line">f3.a = <span class="string">"bbb"</span> //设置不会进入原型链</span><br><span class="line">console.log(f2.a)//aaa</span><br><span class="line">console.log(f3.a)//bbb</span><br><span class="line">console.log(f2)</span><br><span class="line">console.log(f3)</span><br></pre></td></tr></table></figure>
+<h2 id="6-关于instanceof"><a href="#6-关于instanceof" class="headerlink" title="6 关于instanceof"></a>6 关于instanceof</h2><pre><code>1、instanceof判定原理
+    *表达式 A instanceof B
+    *如果B函数的显示原型对象在A对象的原型链上,返回true,否则返回false
+2、Function是通过new自己产生的实例
+</code></pre><h2 id="7-判断下列输出"><a href="#7-判断下列输出" class="headerlink" title="7 判断下列输出"></a>7 判断下列输出</h2><h4 id="例1"><a href="#例1" class="headerlink" title="例1"></a>例1</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Foo</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">var foo = new Foo()</span><br><span class="line">console.log(foo instanceof Foo)//<span class="literal">true</span></span><br><span class="line">console.log(foo instanceof Object)//<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h4 id="例2"><a href="#例2" class="headerlink" title="例2"></a>例2</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object instanceof Function)//<span class="literal">true</span></span><br><span class="line">console.log(Object instanceof Object)//<span class="literal">true</span></span><br><span class="line">console.log(Function instanceof Function)//<span class="literal">true</span></span><br><span class="line">console.log(Function instanceof Object)//<span class="literal">true</span></span><br><span class="line">console.log(Object instanceof Foo)//<span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<h4 id="例3"><a href="#例3" class="headerlink" title="例3"></a>例3</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">FF</span></span>() &#123;&#125;</span><br><span class="line">Object.prototype.a = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	console.log(<span class="string">"aaaaaaaaa"</span>)</span><br><span class="line">&#125;</span><br><span class="line">Function.prototype.b = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	console.log(<span class="string">"bbbbbbbbb"</span>)</span><br><span class="line">&#125;</span><br><span class="line">var ff = new FF()</span><br><span class="line">f.a()//aaaaaaaaa</span><br><span class="line">f.b()//err</span><br><span class="line">F.a()//aaaaaaaaa</span><br><span class="line">F.b()// bbbbbbbbb</span><br></pre></td></tr></table></figure>
+<h2 id="画个funtion-Fun-的原型关系图"><a href="#画个funtion-Fun-的原型关系图" class="headerlink" title="画个funtion Fun() {} 的原型关系图"></a>画个funtion Fun() {} 的原型关系图</h2><p><img src="/2019/04/03/js-prototype/2.png" alt="avatar"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/03/js-prototype/" data-id="cjxodhbe50009i47k5qfu2paw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-js-function" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/03/js-function/" class="article-date">
+  <time datetime="2019-04-03T01:36:00.000Z" itemprop="datePublished">2019-04-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/03/js-function/">函数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">	1、this是什么？</span><br><span class="line">	  *任何函数本质上都是通过某个对象来调用的,如果没有直接指定就是window</span><br><span class="line">	  *所有函数内部都有一个变量this</span><br><span class="line">	  *它的值是调用函数的当前对象</span><br><span class="line">	2、如何确定this的值?</span><br><span class="line">	  *<span class="built_in">test</span>():window</span><br><span class="line">	  *p.test():p</span><br><span class="line">	  *new <span class="built_in">test</span>():新创建的对象</span><br><span class="line">	  *p.call(obj):obj</span><br><span class="line">*/</span><br><span class="line"><span class="keyword">function</span> Person(color) &#123;</span><br><span class="line">	console.log(this);</span><br><span class="line">	this.color = color;</span><br><span class="line">	this.getColor = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">		<span class="built_in">return</span> this.color</span><br><span class="line">	&#125;</span><br><span class="line">	this.setColor = <span class="keyword">function</span>(color) &#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">		this.color = color;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person(<span class="string">"red"</span>);   //this?   window</span><br><span class="line"></span><br><span class="line">var p = new Person(<span class="string">"yellow"</span>);     //this?  Person</span><br><span class="line"></span><br><span class="line">var obj = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">p.setColor.call(obj,<span class="string">"black"</span>);     //this?    obj</span><br><span class="line"></span><br><span class="line">var <span class="built_in">test</span> = p.setColor;</span><br><span class="line"><span class="built_in">test</span>();    //this?      window</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fun1</span></span>() &#123;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">fun2</span></span>() &#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;</span><br><span class="line">	fun2(); //this?     window</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun1();</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/03/js-function/" data-id="cjxodhbe8000bi47kv3rn1ym8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-js-context" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/02/js-context/" class="article-date">
+  <time datetime="2019-04-02T02:47:56.000Z" itemprop="datePublished">2019-04-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/02/js-context/">变量提升、执行上下文、作用域</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、变量提升与函数提升"><a href="#一、变量提升与函数提升" class="headerlink" title="一、变量提升与函数提升"></a>一、变量提升与函数提升</h2><h3 id="1、变量声明提升"><a href="#1、变量声明提升" class="headerlink" title="1、变量声明提升"></a>1、变量声明提升</h3><pre><code>通过var声明的变量,在定义语句之前就可以访问到
+值为undefined
+</code></pre><h3 id="2、函数声明提升"><a href="#2、函数声明提升" class="headerlink" title="2、函数声明提升"></a>2、函数声明提升</h3><pre><code>通过function声明的函数,在之前就可以直接调用
+值为函数定义(对象)
+</code></pre><h3 id="3、问题-变量提升和函数提升是如何产生的"><a href="#3、问题-变量提升和函数提升是如何产生的" class="headerlink" title="3、问题:变量提升和函数提升是如何产生的?"></a>3、问题:变量提升和函数提升是如何产生的?</h3><pre><code>执行上下文的预处理(下文介绍)
+</code></pre><h2 id="二、执行上下文"><a href="#二、执行上下文" class="headerlink" title="二、执行上下文"></a>二、执行上下文</h2><h3 id="1、将代码分类可分为"><a href="#1、将代码分类可分为" class="headerlink" title="1、将代码分类可分为"></a>1、将代码分类可分为</h3><pre><code>全局代码
+函数代码
+</code></pre><h3 id="2、全局执行上下文"><a href="#2、全局执行上下文" class="headerlink" title="2、全局执行上下文"></a>2、全局执行上下文</h3><pre><code>在执行全局代码前将window确定为全局执行上下文
+对全局数据进行预处理
+    用var定义的全局变量===&gt;undefined,添加为window的属性
+    function声明的全局函数===&gt;赋值,添加为window的方法
+    this===&gt;赋值为window
+开始执行全局代码
+</code></pre><h3 id="3、函数执行上下文"><a href="#3、函数执行上下文" class="headerlink" title="3、函数执行上下文"></a>3、函数执行上下文</h3><pre><code>在调用函数,准备执行函数体之前,创建对应函数的执行上下文对象
+对局部数据进行预处理
+    形参变量赋值实参==&gt;添加为执行上下文的属性
+    arguments===&gt;赋值(实参列表),添加为执行上下文的属性
+    var定义的局部变量---&gt;undefined,添加为执行上下文的属性
+    function声明的全局函数===&gt;赋值,添加为执行上下文的方法
+    this===&gt;赋值(调用函数的对象)
+</code></pre><h2 id="三、作用域和作用域链"><a href="#三、作用域和作用域链" class="headerlink" title="三、作用域和作用域链"></a>三、作用域和作用域链</h2><h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><pre><code>1、解释
+    *一段代码块所在的区域
+    *编写代码时就确定了,是静态的
+2、分类
+    *全局作用域
+    *函数作用域
+    *块作用域(es6)
+3、作用:隔离变量,不同作用域下的同名变量不冲突
+</code></pre><h3 id="作用域与执行上下文"><a href="#作用域与执行上下文" class="headerlink" title="作用域与执行上下文"></a>作用域与执行上下文</h3><pre><code>1、区别
+    1.1
+    *全局作用域之外,每个函数都会创建自己的作用域,作用域在函数定义时就已经确定了,而不是在函数调用时
+    *全局执行上下文环境实在全局作用域确定之后,js代码执行之前创建
+    *函数执行上下文是在调用函数时,函数体代码执行前创建的
+    1.2
+    *作用域是静态的,函数定义好就一直存在,不会变化
+    *执行上下文是动态的,调用函数时创建,函数调用结束自动释放
+2、联系
+    *执行上下文环境从属于所在的作用域
+    *全局上下文环境===&gt;全局作用域
+    *函数上下文环境===&gt;对应的函数使用域
+</code></pre><h3 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h3><pre><code>1、解释
+    *多个上下级关系作用域形成的链,它的方向是从下向上(从内到外)的
+    *查找变量沿着作用域链查找
+2、查找规则
+    *当前作用域的执行上下文查找,找到返回,否则进入下一步
+    *在上一级作用域中的执行上下文查找,找到返回,否则进入下一步
+    *再次进行上一步的查找操作,直到全局作用域,未找到则抛出异常
+</code></pre><h3 id="通过例子说明问题"><a href="#通过例子说明问题" class="headerlink" title="通过例子说明问题"></a>通过例子说明问题</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">console.log(a1)</span><br><span class="line">console.log(a2())</span><br><span class="line">console.log(this)   //Q:在哪找到?=&gt;A:全局执行上下文window</span><br><span class="line">var a1 = 3;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">a2</span></span>() &#123;</span><br><span class="line">	<span class="built_in">return</span> <span class="string">"执行了a2"</span></span><br><span class="line">&#125;</span><br><span class="line">//函数执行上下文   Q:什么时候创建内存空间存放上下文的局部变量？A:调用时</span><br><span class="line"><span class="keyword">function</span> fn(a1) &#123;</span><br><span class="line">	console.log(a1)  //测试输出 100</span><br><span class="line">	console.log(a2)  //测试输出 undefined</span><br><span class="line">	a3()             //测试输出	a3</span><br><span class="line">	console.log(this)//测试输出	window</span><br><span class="line">	console.log(arguments)//测试输出 伪数组[]</span><br><span class="line">	var a2 = 3;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">a3</span></span>() &#123;</span><br><span class="line">		console.log(<span class="string">"a3"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn(100,200)</span><br></pre></td></tr></table></figure>
+<h2 id="执行上下文的栈"><a href="#执行上下文的栈" class="headerlink" title="执行上下文的栈"></a>执行上下文的栈</h2><h3 id="Q-分析下列代码"><a href="#Q-分析下列代码" class="headerlink" title="Q:分析下列代码"></a>Q:分析下列代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var a = 10;</span><br><span class="line">var bar = <span class="keyword">function</span>(x) &#123;</span><br><span class="line">	var b = 5;</span><br><span class="line">	foo(x+b);     </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var foo = <span class="keyword">function</span>(y) &#123;</span><br><span class="line">	var c = 5;</span><br><span class="line">	console.log(a+c+y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bar(10);//共产生几个执行上下文对象?  3个  window  bar()  foo() </span><br><span class="line">bar(10);//若再调用一次则答案为5个  window  bar()  foo()  bar()  foo()</span><br></pre></td></tr></table></figure>
+<h3 id="A-分析"><a href="#A-分析" class="headerlink" title="A:分析"></a>A:分析</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//在全局代码执行前,js引擎会创建一个栈来存储管理所有的执行上下文对象</span><br><span class="line">var a = 10;//进入全局上下文   栈内[window]</span><br><span class="line">var bar = <span class="keyword">function</span>(x) &#123;</span><br><span class="line">	var b = 5;</span><br><span class="line">	foo(x+b);     //进入foo的执行上下文</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var foo = <span class="keyword">function</span>(y) &#123;</span><br><span class="line">	var c = 5;</span><br><span class="line">	console.log(a+c+y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bar(10);//进入bar函数执行上下文  </span><br><span class="line">//栈内情况</span><br><span class="line">//[window]</span><br><span class="line">//[window bar]</span><br><span class="line">//[window bar foo]</span><br><span class="line">//[window bar]</span><br><span class="line">//[window]</span><br></pre></td></tr></table></figure>
+<h2 id="相关例题"><a href="#相关例题" class="headerlink" title="相关例题"></a>相关例题</h2><h3 id="例1-下列代码输出-整个过程产生了几个执行上下文"><a href="#例1-下列代码输出-整个过程产生了几个执行上下文" class="headerlink" title="例1:下列代码输出?整个过程产生了几个执行上下文"></a>例1:下列代码输出?整个过程产生了几个执行上下文</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">console.log(<span class="string">"a"</span>+i)</span><br><span class="line">var i = 1;</span><br><span class="line">foo(1);</span><br><span class="line"><span class="keyword">function</span> foo(i)&#123;</span><br><span class="line">	<span class="keyword">if</span>(i==4)&#123;</span><br><span class="line">		<span class="built_in">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	console.log(<span class="string">"fs"</span>+i);</span><br><span class="line">	foo(i+1);</span><br><span class="line">	console.log(<span class="string">"fe"</span>+i)</span><br><span class="line">&#125;</span><br><span class="line">console.log(<span class="string">"b"</span>+i)</span><br><span class="line">//输出:aundefined fs1 fs2 fs3 fe3 fe2 fe1 b1</span><br><span class="line">//栈内情况</span><br><span class="line">//[window]</span><br><span class="line">//[window foo(1)] </span><br><span class="line">//[window foo(1) foo(2)] </span><br><span class="line">//[window foo(1) foo(2) foo(3)] </span><br><span class="line">//[window foo(1) foo(2) foo(3) foo(4)] </span><br><span class="line">//[window foo(1) foo(2) foo(3)] </span><br><span class="line">//[window foo(1) foo(2)] </span><br><span class="line">//[window foo(1)] </span><br><span class="line">//[window]</span><br></pre></td></tr></table></figure>
+<h3 id="例2-1-判断输出"><a href="#例2-1-判断输出" class="headerlink" title="例2.1:判断输出"></a>例2.1:判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">a</span></span>() &#123;&#125;</span><br><span class="line">var a</span><br><span class="line">console.log(typeof a)//? <span class="keyword">function</span></span><br></pre></td></tr></table></figure>
+<h3 id="例2-2-判断输出"><a href="#例2-2-判断输出" class="headerlink" title="例2.2:判断输出"></a>例2.2:判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">a</span></span>() &#123;&#125;</span><br><span class="line">var a = 1</span><br><span class="line">console.log(typeof a)//? number  </span><br><span class="line">//函数提升要比变量提升的优先级要高一些，且不会被变量声明覆盖，但是会被变量赋值之后覆盖</span><br></pre></td></tr></table></figure>
+<h3 id="例3-判断输出"><a href="#例3-判断输出" class="headerlink" title="例3:判断输出"></a>例3:判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!b <span class="keyword">in</span> window)&#123;</span><br><span class="line">	var b = 1;</span><br><span class="line">&#125;</span><br><span class="line">console.log(b)//?undefined</span><br></pre></td></tr></table></figure>
+<h3 id="例4-判断输出"><a href="#例4-判断输出" class="headerlink" title="例4:判断输出"></a>例4:判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var c = 1</span><br><span class="line"><span class="keyword">function</span> c(c)&#123;</span><br><span class="line">	console.log(c)</span><br><span class="line">&#125;</span><br><span class="line">c(2019)//?  报错 <span class="string">'c'</span> is not a <span class="keyword">function</span></span><br></pre></td></tr></table></figure>
+<h3 id="例5：判断输出"><a href="#例5：判断输出" class="headerlink" title="例5：判断输出"></a>例5：判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">var x = 10;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>() &#123;</span><br><span class="line">	console.log(x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> show(f) &#123;</span><br><span class="line">	var x = 20;</span><br><span class="line">	f();</span><br><span class="line">&#125;</span><br><span class="line">show(fn)//? 10  查找变量fn中无x 外层找:x=10</span><br><span class="line"></span><br><span class="line">//输出是什么？</span><br><span class="line">var fn = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	console.log(fn)</span><br><span class="line">&#125;</span><br><span class="line">fn()//<span class="function"><span class="title">funcion</span></span>() &#123;...&#125; 内部找没有 外层找全局内有 输出</span><br></pre></td></tr></table></figure>
+<h3 id="例6：判断输出"><a href="#例6：判断输出" class="headerlink" title="例6：判断输出"></a>例6：判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">	fn2:<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(fn2)//报错</span><br><span class="line">		console.log(this.fn2)//<span class="function"><span class="title">function</span></span>() &#123;...&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.fn2()</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/02/js-context/" data-id="cjxodhbe10006i47kaczcwud0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-js-datatype" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/02/js-datatype/" class="article-date">
+  <time datetime="2019-04-02T02:23:09.000Z" itemprop="datePublished">2019-04-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/02/js-datatype/">数据类型</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1、数据类型"><a href="#1、数据类型" class="headerlink" title="1、数据类型"></a>1、数据类型</h3><h4 id="基本类型-值类型"><a href="#基本类型-值类型" class="headerlink" title="基本类型(值类型)"></a>基本类型(值类型)</h4><pre><code>String：任意字符串
+Number：任意的数字
+Boolean：true/false
+undefined：undefined
+null：null
+</code></pre><h4 id="对象类型-引用类型"><a href="#对象类型-引用类型" class="headerlink" title="对象类型(引用类型)"></a>对象类型(引用类型)</h4><pre><code>Object：任意对象
+Function：一种特别的对象(可以执行)
+Array：一种可别的对象(通过下标访问，内部数据有序)
+</code></pre><h3 id="2、判断"><a href="#2、判断" class="headerlink" title="2、判断"></a>2、判断</h3><pre><code>*typeof：可以判断undefined/number/string/boolean/function!
+         不可以判断null与object  object与array
+*instanceof：判断对象的具体类型
+===
+</code></pre><h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>1、基本数据类型(值类型)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//typeof返回数据类型的字符串表达！！</span><br><span class="line">var a</span><br><span class="line">console.log(a) //undefind</span><br><span class="line">console.log(a,typeof a === <span class="string">'undefined'</span>,a===undefined)//undefined <span class="literal">true</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">"abc"</span></span><br><span class="line">console.log(typeof a,typeof a === <span class="string">'string'</span>)  //<span class="string">'string'</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">a = 123</span><br><span class="line">console.log(typeof a,typeof a === <span class="string">'number'</span>)  //<span class="string">'number'</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">a = <span class="literal">true</span> </span><br><span class="line">console.log(typeof a,typeof a === <span class="string">'boolean'</span>) //<span class="string">'boolean'</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">//*注意null</span><br><span class="line">a = null </span><br><span class="line">console.log(typeof a)  //<span class="string">'object'</span></span><br><span class="line">console.log(a === null) //<span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<p>2、对象数据类型(引用类型)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// a instance of 即 a是否为构造函数b的实例？返回<span class="literal">true</span>和<span class="literal">false</span></span><br><span class="line">var b1 = &#123;</span><br><span class="line">	b2:[1,<span class="string">'abc'</span>,console.log],</span><br><span class="line">	b3:<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(<span class="string">'b3'</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(b1 instanceof Object) //<span class="literal">true</span></span><br><span class="line">console.log(b1 instanceof Array) //<span class="literal">false</span></span><br><span class="line">console.log(b1.b2 instanceof Array,b1.b2 instanceof Object) //<span class="literal">true</span> <span class="literal">true</span></span><br><span class="line">console.log(b1.b3 instanceof Array,b1.b3 instanceof Object) //<span class="literal">false</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><pre><code>1、Q：undefined和null的区别是什么？
+   A：undefined是定义后未赋值 null是定义后赋值为null
+
+2、Q：什么时候给变量赋值为null?
+   A：初始化赋值，表明将要赋值为对象；结束前让对象成为垃圾对象(呗垃圾回收机制回收)
+
+3、Q：严格区别变量类型和数据类型？
+   A：数据的类型分为基本类型和对象类型
+         变量的类型分为基本类型(保存的就是基本类型的数据)/引用类型(保存的是地址值)
+</code></pre><h3 id="写个函数判断数据类型"><a href="#写个函数判断数据类型" class="headerlink" title="写个函数判断数据类型"></a>写个函数判断数据类型</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> getType(data) &#123;</span><br><span class="line">	<span class="keyword">if</span>(data === null)&#123;</span><br><span class="line">		console.log(null)</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span>(typeof data!=<span class="string">"object"</span>)&#123;</span><br><span class="line">		console.log(typeof data)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(data instanceof Array)&#123;</span><br><span class="line">			console.log(<span class="string">"array"</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(data instanceof Function)&#123;</span><br><span class="line">			console.log(<span class="string">"function"</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			console.log(<span class="string">"object"</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/02/js-datatype/" data-id="cjxodhbe30008i47khgyhm9gb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-sort" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/31/sort/" class="article-date">
   <time datetime="2019-03-31T14:16:08.000Z" itemprop="datePublished">2019-03-31</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -298,7 +705,7 @@ console.log(arr)//1,2,3,4,5
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/31/sort/" data-id="cjtz6kkqw0003fw7ksh7vnp6m" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/31/sort/" data-id="cjxodhbeb000di47kuacuvq7z" class="article-share-link">Share</a>
       
       
     </footer>
@@ -343,7 +750,7 @@ console.log(arr)//1,2,3,4,5
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/vue-cors/" data-id="cjtz6kkqn0001fw7kp9wlnk04" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/28/vue-cors/" data-id="cjxodhbf5000li47ke7c3yqq6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -380,7 +787,7 @@ console.log(arr)//1,2,3,4,5
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/firstblog/" data-id="cjtz6kkqe0000fw7kjihoijz3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/28/firstblog/" data-id="cjxodhbdu0002i47krnpgxzm9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -425,7 +832,7 @@ console.log(arr)//1,2,3,4,5
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/hello-world/" data-id="cjtz6kkqq0002fw7kpqvanexa" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/28/hello-world/" data-id="cjxodhbdy0004i47k09p4xzzb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -442,6 +849,13 @@ console.log(arr)//1,2,3,4,5
           <aside id="sidebar">
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
 
   
     
@@ -453,7 +867,7 @@ console.log(arr)//1,2,3,4,5
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
     </div>
   </div>
 
@@ -466,19 +880,23 @@ console.log(arr)//1,2,3,4,5
       <ul>
         
           <li>
-            <a href="/2019/03/31/sort/">排序算法</a>
+            <a href="/2019/05/01/algorithm-windowString/">窗口最短连续字符串</a>
           </li>
         
           <li>
-            <a href="/2019/03/28/vue-cors/">VUE项目axios发送请求CORS跨域问题解决方案</a>
+            <a href="/2019/04/07/js-closure/">闭包</a>
           </li>
         
           <li>
-            <a href="/2019/03/28/firstblog/">博客搭建</a>
+            <a href="/2019/04/03/js-prototype/">原型</a>
           </li>
         
           <li>
-            <a href="/2019/03/28/hello-world/">Hello World</a>
+            <a href="/2019/04/03/js-function/">函数</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/02/js-context/">变量提升、执行上下文、作用域</a>
           </li>
         
       </ul>
