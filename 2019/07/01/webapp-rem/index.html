@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>移动端适配之rem布局 | 菜鸟每天都要写博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="PC端/移动端区别效果:     PC:鼠标经过效果(伪类选择器)     移动端:没有鼠标,只有轮播图(点击 滑动 效果)等 浏览器:     PC:浏览器兼容(多内核)     移动端:(webkit内核)手机适配(分辨率不同 显示页面效果不同)  视口1&amp;lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, user-scalable=no">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端适配之rem布局">
+<meta property="og:url" content="http://yoursite.com/2019/07/01/webapp-rem/index.html">
+<meta property="og:site_name" content="菜鸟每天都要写博客">
+<meta property="og:description" content="PC端/移动端区别效果:     PC:鼠标经过效果(伪类选择器)     移动端:没有鼠标,只有轮播图(点击 滑动 效果)等 浏览器:     PC:浏览器兼容(多内核)     移动端:(webkit内核)手机适配(分辨率不同 显示页面效果不同)  视口1&amp;lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, user-scalable=no">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:updated_time" content="2019-07-08T11:29:56.977Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="移动端适配之rem布局">
+<meta name="twitter:description" content="PC端/移动端区别效果:     PC:鼠标经过效果(伪类选择器)     移动端:没有鼠标,只有轮播图(点击 滑动 效果)等 浏览器:     PC:浏览器兼容(多内核)     移动端:(webkit内核)手机适配(分辨率不同 显示页面效果不同)  视口1&amp;lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, user-scalable=no">
+  
+    <link rel="alternate" href="/atom.xml" title="菜鸟每天都要写博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟每天都要写博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-webapp-rem" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/01/webapp-rem/" class="article-date">
+  <time datetime="2019-07-01T10:00:48.000Z" itemprop="datePublished">2019-07-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/移动端/">移动端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      移动端适配之rem布局
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="PC端-移动端区别"><a href="#PC端-移动端区别" class="headerlink" title="PC端/移动端区别"></a>PC端/移动端区别</h3><pre><code>效果:
+    PC:鼠标经过效果(伪类选择器)
+    移动端:没有鼠标,只有轮播图(点击 滑动 效果)等
+浏览器:
+    PC:浏览器兼容(多内核)
+    移动端:(webkit内核)手机适配(分辨率不同 显示页面效果不同) 
+</code></pre><h3 id="视口"><a href="#视口" class="headerlink" title="视口"></a>视口</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=<span class="string">"viewport"</span> content=<span class="string">"width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>width=device-width 页面宽度等于设备宽度<br>user-scalable=no 不允许用户手动缩放页面<br>initial-scale=1.0 初始缩放比例1:1<br>maximum-scale=1.0 最大缩放比例1:1<br>minimum-scale=1.0 最小缩放比例1:1</p>
+<h3 id="Rem"><a href="#Rem" class="headerlink" title="Rem"></a>Rem</h3><p>rem = root element<br>rem获取html元素(根元素)的字体大小<br>chrome默认html的字体大小16px =&gt; 1rem=16px<br>1rem = 16px<br>   ? = 100px<br>不好计算<br>我们可以规定1rem = 100px<br>那么对于不同的分辨率(320,375,414…)<br>只需要使用媒体查询修改html{fontsize}即可</p>
+<p>常见手机分辨率</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">手机</th>
+<th style="text-align:center">分辨率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">iphone5/5s</td>
+<td style="text-align:center">320px</td>
+</tr>
+<tr>
+<td style="text-align:center">iphone6/6s</td>
+<td style="text-align:center">375px</td>
+</tr>
+<tr>
+<td style="text-align:center">iphone6sPlus</td>
+<td style="text-align:center">414px</td>
+</tr>
+</tbody>
+</table>
+<h4 id="以iphone5为基准"><a href="#以iphone5为基准" class="headerlink" title="以iphone5为基准"></a><font color="red">以iphone5为基准</font></h4><p>font-size:100px<br>那么<br>iphone6/6s<br>375:?=320:100<br>font-size=375x100/320=117.1875px;</p>
+<p>iphone6P/6SP<br>414:?=320:100<br>font-size=414x100/320=129.375px;</p>
+<h4 id="以iphone6为基准"><a href="#以iphone6为基准" class="headerlink" title="以iphone6为基准"></a><font color="red">以iphone6为基准</font></h4><p>font-size:100px<br>那么<br>iphone5/5s<br>320:?=375:100<br>font-size=320x100/375=85.33px;</p>
+<p>iphone6P/6SP<br>414:?=375:100<br>font-size=414x100/375=110.4px;</p>
+<h3 id="DPR"><a href="#DPR" class="headerlink" title="DPR"></a>DPR</h3><p>DPR:设备像素比 </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">手机</th>
+<th style="text-align:center">分辨率</th>
+<th>DPR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">iphone5/5s</td>
+<td style="text-align:center">320px</td>
+<td>2</td>
+</tr>
+<tr>
+<td style="text-align:center">iphone6/6s</td>
+<td style="text-align:center">375px</td>
+<td>2</td>
+</tr>
+<tr>
+<td style="text-align:center">iphone6sPlus</td>
+<td style="text-align:center">414px</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>设计稿依照分辨率xdpr设计<br>一般分为640px(参照iphone5)和750px(参照iphone6)<br>使用时需要将font-size缩小才能正确显示</p>
+<p>对于750px的设计稿<br>iphone6/6s font-size:50px;<br>iphone5/5s font-size:42.67px;<br>iphone6Plus font-size:55.2px</p>
+<h3 id="最终代码"><a href="#最终代码" class="headerlink" title="最终代码"></a>最终代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@media screen and (min-width: 320px)&#123;</span><br><span class="line">	html&#123;</span><br><span class="line">		font-size: 42.66px;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">@media screen and (min-width: 375px)&#123;</span><br><span class="line">	html&#123;</span><br><span class="line">		font-size: 50px;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">@media screen and (min-width: 414px)&#123;</span><br><span class="line">	html&#123;</span><br><span class="line">		font-size: 55.2px;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/01/webapp-rem/" data-id="cjy6z9bqq0011u87kfine7r7l" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/07/09/net-https/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          HTTPS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/21/algorithm-rain/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">接雨水</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/移动端/">移动端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/14/vue-MVVM/">关于vue里的MVVM</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/vue-router/">前端路由</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/algorithm-sqrtNumberGame/">数字游戏</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/11/front-vdom/">Virtual DOM</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/09/net-https/">HTTPS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 yuan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

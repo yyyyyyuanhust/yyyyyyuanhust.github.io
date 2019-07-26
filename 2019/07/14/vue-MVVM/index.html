@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>关于vue里的MVVM | 菜鸟每天都要写博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="了解MVVM你需要知道1、常见节点类型   节点 节点名称 nodeType     document 文档节点 9   element 元素节点 1   attribute 属性节点 2   text 文本节点 3    2、Object.defineProperty12345678910111213Object.defineProperty(obj,prop,descriptor)//obj目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于vue里的MVVM">
+<meta property="og:url" content="http://yoursite.com/2019/07/14/vue-MVVM/index.html">
+<meta property="og:site_name" content="菜鸟每天都要写博客">
+<meta property="og:description" content="了解MVVM你需要知道1、常见节点类型   节点 节点名称 nodeType     document 文档节点 9   element 元素节点 1   attribute 属性节点 2   text 文本节点 3    2、Object.defineProperty12345678910111213Object.defineProperty(obj,prop,descriptor)//obj目">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:updated_time" content="2019-07-26T05:32:52.885Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于vue里的MVVM">
+<meta name="twitter:description" content="了解MVVM你需要知道1、常见节点类型   节点 节点名称 nodeType     document 文档节点 9   element 元素节点 1   attribute 属性节点 2   text 文本节点 3    2、Object.defineProperty12345678910111213Object.defineProperty(obj,prop,descriptor)//obj目">
+  
+    <link rel="alternate" href="/atom.xml" title="菜鸟每天都要写博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟每天都要写博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-vue-MVVM" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/14/vue-MVVM/" class="article-date">
+  <time datetime="2019-07-14T09:37:16.000Z" itemprop="datePublished">2019-07-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/vue/">vue</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      关于vue里的MVVM
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="了解MVVM你需要知道"><a href="#了解MVVM你需要知道" class="headerlink" title="了解MVVM你需要知道"></a>了解MVVM你需要知道</h3><h4 id="1、常见节点类型"><a href="#1、常见节点类型" class="headerlink" title="1、常见节点类型"></a>1、常见节点类型</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">节点</th>
+<th style="text-align:center">节点名称</th>
+<th style="text-align:center">nodeType</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">document</td>
+<td style="text-align:center">文档节点</td>
+<td style="text-align:center">9</td>
+</tr>
+<tr>
+<td style="text-align:center">element</td>
+<td style="text-align:center">元素节点</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">attribute</td>
+<td style="text-align:center">属性节点</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">text</td>
+<td style="text-align:center">文本节点</td>
+<td style="text-align:center">3</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2、Object-defineProperty"><a href="#2、Object-defineProperty" class="headerlink" title="2、Object.defineProperty"></a>2、Object.defineProperty</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Object.defineProperty(obj,prop,descriptor)</span><br><span class="line">//obj目标对象</span><br><span class="line">//prop属性名</span><br><span class="line">//descriptor属性描述符</span><br><span class="line">descriptor包含属性: </span><br><span class="line">    数据描述符</span><br><span class="line">	    configurable</span><br><span class="line">	    enumerable</span><br><span class="line">	    value</span><br><span class="line">	    writable</span><br><span class="line">    访问描述符</span><br><span class="line">	    set</span><br><span class="line">	    get</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">键名</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">configurable</td>
+<td style="text-align:center">是否可配置(重新定义)</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">enumerable</td>
+<td style="text-align:center">是否可枚举(遍历查找)</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">属性值(初始值)</td>
+<td style="text-align:center">undefined</td>
+</tr>
+<tr>
+<td style="text-align:center">writable</td>
+<td style="text-align:center">是否可修改</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:center">get</td>
+<td style="text-align:center">回调函数:根据其他相关属性动态计算读取当前属性的值</td>
+<td style="text-align:center">undefined</td>
+</tr>
+<tr>
+<td style="text-align:center">set</td>
+<td style="text-align:center">回调函数:监视当前属性值的变化,更新其他相关的属性</td>
+<td style="text-align:center">undefined</td>
+</tr>
+</tbody>
+</table>
+<p>例子<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> obj = &#123;</span><br><span class="line">	a:<span class="string">"A"</span>,</span><br><span class="line">	b:<span class="string">"B"</span></span><br><span class="line">&#125;</span><br><span class="line">Object.defineProperty(obj,<span class="string">'c'</span>,&#123;   //给obj定义一个属性c</span><br><span class="line">	enumerable:<span class="literal">true</span>,</span><br><span class="line">	<span class="function"><span class="title">get</span></span>()&#123;</span><br><span class="line">		<span class="built_in">return</span> this.a+<span class="string">'-'</span>+this.b</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="built_in">set</span>(value)&#123;</span><br><span class="line">		const n = value.split(<span class="string">"-"</span>)</span><br><span class="line">		this.a = n[0]</span><br><span class="line">		this.b = n[1]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(obj.c)//A-B</span><br><span class="line">obj.a = <span class="string">'C'</span></span><br><span class="line">console.log(obj.c)//C-B</span><br><span class="line">obj.c = <span class="string">'H-H'</span></span><br><span class="line">console.log(obj.a+<span class="string">' '</span>+obj.b)//H H</span><br></pre></td></tr></table></figure></p>
+<h4 id="3、Object-keys"><a href="#3、Object-keys" class="headerlink" title="3、Object.keys()"></a>3、Object.keys()</h4><p>返回对象自身<font color="red">可枚举</font>属性组成的数组<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> obj = &#123;</span><br><span class="line">	a:0,</span><br><span class="line">	b:1</span><br><span class="line">&#125;</span><br><span class="line">Object.defineProperty(obj,c,&#123;</span><br><span class="line">	enumerable:<span class="literal">true</span></span><br><span class="line">	value:2</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">Object.defineProperty(obj,d,&#123;</span><br><span class="line">	value:3</span><br><span class="line">&#125;)</span><br><span class="line">const names = Object.keys(obj)</span><br><span class="line">console.log(names) // [a,b,c] 没有d</span><br></pre></td></tr></table></figure></p>
+<h3 id="4、obj-hasOwnProperty-prop"><a href="#4、obj-hasOwnProperty-prop" class="headerlink" title="4、obj.hasOwnProperty(prop)"></a>4、obj.hasOwnProperty(prop)</h3><p>判断prop是否是obj<font color="red">自身</font>的属性<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> obj = &#123;</span><br><span class="line">	a:0,</span><br><span class="line">	b:1</span><br><span class="line">&#125;</span><br><span class="line">console.log(obj.hasOwnProperty(<span class="string">'a'</span>)) //<span class="literal">true</span></span><br><span class="line">console.log(obj.hasOwnProperty(<span class="string">'toString'</span>)) //<span class="literal">false</span>  属性在原型链上而不在自身</span><br></pre></td></tr></table></figure></p>
+<h3 id="5、DocumentFragment"><a href="#5、DocumentFragment" class="headerlink" title="5、DocumentFragment"></a>5、DocumentFragment</h3><p>document VS documentFragment</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">node类型</th>
+<th style="text-align:center">更新与页面的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">document</td>
+<td style="text-align:center">对应显示页面,包含n个element,一旦更新其中的某个元素界面都会更新</td>
+</tr>
+<tr>
+<td style="text-align:center">documentFragment</td>
+<td style="text-align:center">是内存中保存n个element的容器对象,不与界面关联,更新fragment中的element时界面不变</td>
+</tr>
+</tbody>
+</table>
+<p>例:现有需求在 内存中将所有li的内容替换为updated data<br>解决方案:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul id=<span class="string">"test"</span>&gt;</span><br><span class="line">  &lt;li&gt;aaa&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;bbb&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;ccc&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line"></span><br><span class="line">const ul = document.getElementById(<span class="string">'test'</span>)</span><br><span class="line">//1、创建文档碎片</span><br><span class="line">const df = document.createDocumentFragment()</span><br><span class="line"></span><br><span class="line">//2、取出ul中所有子节点保存到文档碎片中</span><br><span class="line"><span class="built_in">let</span> child</span><br><span class="line"><span class="keyword">while</span>(child==ul.firstChild)&#123;</span><br><span class="line">	df.appendChild(child)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//3、更新文档碎片中所有的li的文本</span><br><span class="line">Array.prototype.slice.call(fragment.childNodes).forEach(node=&gt;&#123;</span><br><span class="line">    <span class="keyword">if</span>(node.nodeType===1)&#123;//元素节点</span><br><span class="line">    	node.textContent = <span class="string">'updated data'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">//4、将文档碎片插入ul</span><br><span class="line">ul.appendChild(df)</span><br></pre></td></tr></table></figure></p>
+<h3 id="数据代理"><a href="#数据代理" class="headerlink" title="数据代理"></a>数据代理</h3><p>数据代理:通过一个对象代理对另一个对象中的属性进行操作(读/写)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">proxy:<span class="keyword">function</span>(key)&#123;</span><br><span class="line">	<span class="built_in">let</span> that = this</span><br><span class="line">	Object.defineproperty(that,key.&#123;</span><br><span class="line">		configurable:<span class="literal">false</span>,</span><br><span class="line">		enumerable:<span class="literal">true</span>,</span><br><span class="line">		get:<span class="keyword">function</span> <span class="function"><span class="title">proxyGetter</span></span>()&#123;</span><br><span class="line">			<span class="built_in">return</span> that._data[key]</span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="built_in">set</span>:<span class="keyword">function</span> proxySetter(newVal)&#123;</span><br><span class="line">			that._data[key] = newVal</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="模板解析"><a href="#模板解析" class="headerlink" title="模板解析"></a>模板解析</h3><h4 id="解析文本-大括号表达式"><a href="#解析文本-大括号表达式" class="headerlink" title="解析文本-大括号表达式"></a>解析文本-大括号表达式</h4><p>1、根据正则对象得到匹配的表达式字符串 子匹配(RegExp.$1)获取属性值<br>2、从data中取出表达式对应的属性值<br>3、将属性值设置为文本节点的textContent</p>
+<h4 id="解析指令-事件指令"><a href="#解析指令-事件指令" class="headerlink" title="解析指令-事件指令"></a>解析指令-事件指令</h4><p>1、从指令名中取出事件名<br>2、根据指令的值(表达式)从methods中得到对应的事件处理函数对象<br>3、给当前元素节点绑定事件名和回调函数的dom事件监听<br>4、指令解析完移除指令属性</p>
+<h3 id="数据劫持"><a href="#数据劫持" class="headerlink" title="数据劫持"></a>数据劫持</h3><p>1、修改属性 this.xxx = ‘xxx’<br>2、vm的set回调执行 (回调中修改的是data中的属性值)<br>3、触发data中属性的set回调执行<br>4、引起页面的修改</p>
+<h3 id="数据劫持涉及的类"><a href="#数据劫持涉及的类" class="headerlink" title="数据劫持涉及的类"></a>数据劫持涉及的类</h3><p>1、observer:给data重新定义属性 添加set/get方法<br>在get中建立dep和watcher之间的关系,在set中监视key属性变化,通知所有相关订阅者(watcher)<br>2、dep:对应属性名 通知watcher<br>3、watcher:对应表达式 建立dep和watcher的关系 数据变化后回调函数调用 更新界面</p>
+<h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">       监视data中所有层次的属性       与data属性一一对应</span><br><span class="line">                             [通知数据变化]</span><br><span class="line">         Observer----------------------------------------&gt;Dep----------------</span><br><span class="line">        /|                                                 |\`               \</span><br><span class="line">new MVVM                                                     \                \</span><br><span class="line">        \                                                     \                \</span><br><span class="line">      解析指令和&#123;&#123;&#125;&#125;编译(同时为表达式创建对应的watcher)        添加订阅者        通知所有相关的watcher </span><br><span class="line">          \|                                                    \                \</span><br><span class="line">        Complie ---------------------------------------------&gt;Watcher&lt;------------</span><br><span class="line">            \                                                  /</span><br><span class="line">             \                                                /</span><br><span class="line">              \                                              /</span><br><span class="line">               ------------------&gt;Updater&lt;-------------------</span><br><span class="line">                   初始化视图                   更新视图</span><br></pre></td></tr></table></figure>
+<h3 id="双向数据绑定"><a href="#双向数据绑定" class="headerlink" title="双向数据绑定"></a>双向数据绑定</h3><p>1、前提:建立在单向数据绑定model-&gt;view之上<br>2、流程<br>    在解析v-model指令时,给当前元素添加input事件<br>    当input的value变化时,将最新的值赋值给当前表达式对应的data属性上(触发set回调进入步骤1)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/14/vue-MVVM/" data-id="cjy6z9bqm000xu87kdsh8pi7g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/07/13/vue-router/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">前端路由</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/移动端/">移动端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/14/vue-MVVM/">关于vue里的MVVM</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/vue-router/">前端路由</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/algorithm-sqrtNumberGame/">数字游戏</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/11/front-vdom/">Virtual DOM</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/09/net-https/">HTTPS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 yuan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

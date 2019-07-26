@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>操作系统总结 | 菜鸟每天都要写博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="操作系统的四大特性并发区分并发和并行并行:指两个或多个事件在同一时刻同时发生并发:指两个或多个事件在同一时间间隔内发生.这些时间宏观上是同时发生的,但微观上是交替发生的操作系统的并发性指计算机系统中同时存在多个运行的程序一个单核处理机CPU同一时刻智能执行一个程序,因此操作系统会负责协调多个程序交替执行(微观交替,宏观即用户角度就像在同时执行)事实上,操作系统就是伴随着”多道程序技术”而出现的.因">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统总结">
+<meta property="og:url" content="http://yoursite.com/2019/04/17/OS-all/index.html">
+<meta property="og:site_name" content="菜鸟每天都要写博客">
+<meta property="og:description" content="操作系统的四大特性并发区分并发和并行并行:指两个或多个事件在同一时刻同时发生并发:指两个或多个事件在同一时间间隔内发生.这些时间宏观上是同时发生的,但微观上是交替发生的操作系统的并发性指计算机系统中同时存在多个运行的程序一个单核处理机CPU同一时刻智能执行一个程序,因此操作系统会负责协调多个程序交替执行(微观交替,宏观即用户角度就像在同时执行)事实上,操作系统就是伴随着”多道程序技术”而出现的.因">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2019/04/17/OS-all/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/17/OS-all/jincheng.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/17/OS-all/jc2.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/17/OS-all/jc3.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/17/OS-all/jc4.png">
+<meta property="og:updated_time" content="2019-07-26T05:15:54.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统总结">
+<meta name="twitter:description" content="操作系统的四大特性并发区分并发和并行并行:指两个或多个事件在同一时刻同时发生并发:指两个或多个事件在同一时间间隔内发生.这些时间宏观上是同时发生的,但微观上是交替发生的操作系统的并发性指计算机系统中同时存在多个运行的程序一个单核处理机CPU同一时刻智能执行一个程序,因此操作系统会负责协调多个程序交替执行(微观交替,宏观即用户角度就像在同时执行)事实上,操作系统就是伴随着”多道程序技术”而出现的.因">
+<meta name="twitter:image" content="http://yoursite.com/2019/04/17/OS-all/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="菜鸟每天都要写博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟每天都要写博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-OS-all" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/17/OS-all/" class="article-date">
+  <time datetime="2019-04-17T08:00:00.000Z" itemprop="datePublished">2019-04-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      操作系统总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="操作系统的四大特性"><a href="#操作系统的四大特性" class="headerlink" title="操作系统的四大特性"></a>操作系统的四大特性</h2><h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><h4 id="区分并发和并行"><a href="#区分并发和并行" class="headerlink" title="区分并发和并行"></a>区分并发和并行</h4><p>并行:指两个或多个事件在同一时刻同时发生<br>并发:指两个或多个事件在同一时间间隔内发生.这些时间宏观上是同时发生的,但微观上是交替发生的<br>操作系统的并发性指计算机系统中同时存在多个运行的程序<br>一个单核处理机CPU同一时刻智能执行一个程序,因此操作系统会负责协调多个程序交替执行(微观交替,宏观即用户角度就像在同时执行)<br>事实上,操作系统就是伴随着”多道程序技术”而出现的.因此,<font color="red">操作系统和程序并发是一起诞生的</font><br>当今计算机一般都是多核CPU 如Intel8代i3CPU是4核CPU,即同一时刻可以有4个程序并行执行,但依然需要操作系统的并发处理</p>
+<h3 id="共享"><a href="#共享" class="headerlink" title="共享"></a>共享</h3><p>共享即资源共享,是指系统中的资源可供内存中多个并发执行的进程共同使用</p>
+<h5 id="共享方式"><a href="#共享方式" class="headerlink" title="共享方式"></a>共享方式</h5><table>
+<thead>
+<tr>
+<th style="text-align:center">方式</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">互斥共享方式</td>
+<td style="text-align:center">系统中的某些资源,虽然可以提高给多个进程使用,但一个时间段内只允许一个进程访问该资源</td>
+<td style="text-align:center">使用QQ和微信视频时,同一时间摄像头只能分配给其中一个进程</td>
+</tr>
+<tr>
+<td style="text-align:center">同时共享方式</td>
+<td style="text-align:center">系统中的某些资源,允许一个时间段内有多个进程”同时”对它们进行访问</td>
+<td style="text-align:center">使用QQ发送文件A 同时微信发送文件B 宏观上看两个进程都在同时读取并发送,即两个进程都在访问硬盘资源.微观上,两个进程视交替访问硬盘的</td>
+</tr>
+</tbody>
+</table>
+<font color="red">所谓的”同时”往往是宏观的,而在微观上,这些进程可能是交替地对该资源进行访问</font>
+
+<h3 id="虚拟"><a href="#虚拟" class="headerlink" title="虚拟"></a>虚拟</h3><p>虚拟是指把一个物理上的实体变为若干个逻辑上的对应物,物理实体是真实存在的,而逻辑对应物是用户感受到的<br>如单核CPU下运行了6个程序 让用户感受到6个CPU在运行</p>
+<h4 id="虚拟技术"><a href="#虚拟技术" class="headerlink" title="虚拟技术"></a>虚拟技术</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">虚拟技术</th>
+<th style="text-align:center">例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">空分复用技术</td>
+<td style="text-align:center">虚拟内存(物理内存&lt;&lt;需求内存 分配虚拟内存处理)</td>
+</tr>
+<tr>
+<td style="text-align:center">时分复用技术</td>
+<td style="text-align:center">虚拟处理器(单核处理器下运行多程序)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>异步是指在多道程序环境下 允许多个程序并发执行,但由于资源有限,进程的执行不是一贯到底的,而是走走停停,以不可预知的速度向前推进的,这就是进程的异步性</p>
+<h2 id="操作系统分类"><a href="#操作系统分类" class="headerlink" title="操作系统分类"></a>操作系统分类</h2><p><img src="/2019/04/17/OS-all/1.png" alt="avatar"></p>
+<hr>
+<h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h2><p>1、中断发生时,cpu以及进入核心态<br>2、中断发生后,当前运行的进程停止运行,并由操作系统内核对中断进行处理<br>3、对于不同的中断信号,会进行不同的处理</p>
+<font color="red">中断可以使CPU从用户态转换为核心态,使操作系统获得计算机的控制权</font>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:center">分类</th>
+<th style="text-align:center">特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">内中断</td>
+<td style="text-align:center">信号来源于CPU内部(如指令中断,硬件故障,软件中断)</td>
+</tr>
+<tr>
+<td style="text-align:center">外中断</td>
+<td style="text-align:center">信号来源于CPU外部(如人工干预,外设请求)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>具有动态性<br>进程是程序的一次执行过程,是系统进行资源分配和调度的一个独立单位<br>进程实体=程序段+数据段+PCB(进程控制块:存放操作系统所需的数据)</p>
+<h4 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">状态</th>
+<th style="text-align:center">特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">运行态</td>
+<td style="text-align:center">占有CPU,在CPU上运行</td>
+</tr>
+<tr>
+<td style="text-align:center">就绪态</td>
+<td style="text-align:center">具备运行条件,由于没有空闲CPU,暂时无法运行</td>
+</tr>
+<tr>
+<td style="text-align:center">阻塞态</td>
+<td style="text-align:center">因等待某一事件不能运行</td>
+</tr>
+<tr>
+<td style="text-align:center">创建态</td>
+<td style="text-align:center">进程正在被创建,操作系统为进程分配资源,初始化PCB</td>
+</tr>
+<tr>
+<td style="text-align:center">终止态</td>
+<td style="text-align:center">进程正在从系统中撤销,操作系统回收进程拥有的资源,撤销PCB</td>
+</tr>
+</tbody>
+</table>
+<h4 id="进程状态转换"><a href="#进程状态转换" class="headerlink" title="进程状态转换"></a>进程状态转换</h4><p><img src="/2019/04/17/OS-all/jincheng.png" alt="avatar"><br><img src="/2019/04/17/OS-all/jc2.png" alt="avatar"></p>
+<h4 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h4><p>使用原语(开中断指令+关中断指令)<br><img src="/2019/04/17/OS-all/jc3.png" alt="avatar"></p>
+<h4 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">方式</th>
+<th style="text-align:center">特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">共享存储</td>
+<td style="text-align:center">互斥访问共享区域</td>
+</tr>
+<tr>
+<td style="text-align:center">管道通信</td>
+<td style="text-align:center">采用半双工通信管道</td>
+</tr>
+<tr>
+<td style="text-align:center">消息传递</td>
+<td style="text-align:center">直接(挂载到消息队列),间接(挂载到中间存储器)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h4><p>轻量级进程<br>程序执行流的最小单位<br>引入线程后:<br><img src="/2019/04/17/OS-all/jc4.png" alt="avatar"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/17/OS-all/" data-id="cjy6z9boi0000u87k55uklzir" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/04/21/js-curry/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          了解柯里化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/04/07/js-closure/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">闭包</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/移动端/">移动端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/14/vue-MVVM/">关于vue里的MVVM</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/vue-router/">前端路由</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/algorithm-sqrtNumberGame/">数字游戏</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/11/front-vdom/">Virtual DOM</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/09/net-https/">HTTPS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 yuan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

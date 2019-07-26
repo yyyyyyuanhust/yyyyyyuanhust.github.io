@@ -62,10 +62,444 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-algorithm-windowString" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-vue-MVVM" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/05/01/algorithm-windowString/" class="article-date">
-  <time datetime="2019-05-01T07:50:52.000Z" itemprop="datePublished">2019-05-01</time>
+    <a href="/2019/07/14/vue-MVVM/" class="article-date">
+  <time datetime="2019-07-14T09:37:16.000Z" itemprop="datePublished">2019-07-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/vue/">vue</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/14/vue-MVVM/">关于vue里的MVVM</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="了解MVVM你需要知道"><a href="#了解MVVM你需要知道" class="headerlink" title="了解MVVM你需要知道"></a>了解MVVM你需要知道</h3><h4 id="1、常见节点类型"><a href="#1、常见节点类型" class="headerlink" title="1、常见节点类型"></a>1、常见节点类型</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">节点</th>
+<th style="text-align:center">节点名称</th>
+<th style="text-align:center">nodeType</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">document</td>
+<td style="text-align:center">文档节点</td>
+<td style="text-align:center">9</td>
+</tr>
+<tr>
+<td style="text-align:center">element</td>
+<td style="text-align:center">元素节点</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">attribute</td>
+<td style="text-align:center">属性节点</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">text</td>
+<td style="text-align:center">文本节点</td>
+<td style="text-align:center">3</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2、Object-defineProperty"><a href="#2、Object-defineProperty" class="headerlink" title="2、Object.defineProperty"></a>2、Object.defineProperty</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Object.defineProperty(obj,prop,descriptor)</span><br><span class="line">//obj目标对象</span><br><span class="line">//prop属性名</span><br><span class="line">//descriptor属性描述符</span><br><span class="line">descriptor包含属性: </span><br><span class="line">    数据描述符</span><br><span class="line">	    configurable</span><br><span class="line">	    enumerable</span><br><span class="line">	    value</span><br><span class="line">	    writable</span><br><span class="line">    访问描述符</span><br><span class="line">	    set</span><br><span class="line">	    get</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">键名</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">configurable</td>
+<td style="text-align:center">是否可配置(重新定义)</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">enumerable</td>
+<td style="text-align:center">是否可枚举(遍历查找)</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">属性值(初始值)</td>
+<td style="text-align:center">undefined</td>
+</tr>
+<tr>
+<td style="text-align:center">writable</td>
+<td style="text-align:center">是否可修改</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:center">get</td>
+<td style="text-align:center">回调函数:根据其他相关属性动态计算读取当前属性的值</td>
+<td style="text-align:center">undefined</td>
+</tr>
+<tr>
+<td style="text-align:center">set</td>
+<td style="text-align:center">回调函数:监视当前属性值的变化,更新其他相关的属性</td>
+<td style="text-align:center">undefined</td>
+</tr>
+</tbody>
+</table>
+<p>例子<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> obj = &#123;</span><br><span class="line">	a:<span class="string">"A"</span>,</span><br><span class="line">	b:<span class="string">"B"</span></span><br><span class="line">&#125;</span><br><span class="line">Object.defineProperty(obj,<span class="string">'c'</span>,&#123;   //给obj定义一个属性c</span><br><span class="line">	enumerable:<span class="literal">true</span>,</span><br><span class="line">	<span class="function"><span class="title">get</span></span>()&#123;</span><br><span class="line">		<span class="built_in">return</span> this.a+<span class="string">'-'</span>+this.b</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="built_in">set</span>(value)&#123;</span><br><span class="line">		const n = value.split(<span class="string">"-"</span>)</span><br><span class="line">		this.a = n[0]</span><br><span class="line">		this.b = n[1]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(obj.c)//A-B</span><br><span class="line">obj.a = <span class="string">'C'</span></span><br><span class="line">console.log(obj.c)//C-B</span><br><span class="line">obj.c = <span class="string">'H-H'</span></span><br><span class="line">console.log(obj.a+<span class="string">' '</span>+obj.b)//H H</span><br></pre></td></tr></table></figure></p>
+<h4 id="3、Object-keys"><a href="#3、Object-keys" class="headerlink" title="3、Object.keys()"></a>3、Object.keys()</h4><p>返回对象自身<font color="red">可枚举</font>属性组成的数组<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> obj = &#123;</span><br><span class="line">	a:0,</span><br><span class="line">	b:1</span><br><span class="line">&#125;</span><br><span class="line">Object.defineProperty(obj,c,&#123;</span><br><span class="line">	enumerable:<span class="literal">true</span></span><br><span class="line">	value:2</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">Object.defineProperty(obj,d,&#123;</span><br><span class="line">	value:3</span><br><span class="line">&#125;)</span><br><span class="line">const names = Object.keys(obj)</span><br><span class="line">console.log(names) // [a,b,c] 没有d</span><br></pre></td></tr></table></figure></p>
+<h3 id="4、obj-hasOwnProperty-prop"><a href="#4、obj-hasOwnProperty-prop" class="headerlink" title="4、obj.hasOwnProperty(prop)"></a>4、obj.hasOwnProperty(prop)</h3><p>判断prop是否是obj<font color="red">自身</font>的属性<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> obj = &#123;</span><br><span class="line">	a:0,</span><br><span class="line">	b:1</span><br><span class="line">&#125;</span><br><span class="line">console.log(obj.hasOwnProperty(<span class="string">'a'</span>)) //<span class="literal">true</span></span><br><span class="line">console.log(obj.hasOwnProperty(<span class="string">'toString'</span>)) //<span class="literal">false</span>  属性在原型链上而不在自身</span><br></pre></td></tr></table></figure></p>
+<h3 id="5、DocumentFragment"><a href="#5、DocumentFragment" class="headerlink" title="5、DocumentFragment"></a>5、DocumentFragment</h3><p>document VS documentFragment</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">node类型</th>
+<th style="text-align:center">更新与页面的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">document</td>
+<td style="text-align:center">对应显示页面,包含n个element,一旦更新其中的某个元素界面都会更新</td>
+</tr>
+<tr>
+<td style="text-align:center">documentFragment</td>
+<td style="text-align:center">是内存中保存n个element的容器对象,不与界面关联,更新fragment中的element时界面不变</td>
+</tr>
+</tbody>
+</table>
+<p>例:现有需求在 内存中将所有li的内容替换为updated data<br>解决方案:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul id=<span class="string">"test"</span>&gt;</span><br><span class="line">  &lt;li&gt;aaa&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;bbb&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;ccc&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line"></span><br><span class="line">const ul = document.getElementById(<span class="string">'test'</span>)</span><br><span class="line">//1、创建文档碎片</span><br><span class="line">const df = document.createDocumentFragment()</span><br><span class="line"></span><br><span class="line">//2、取出ul中所有子节点保存到文档碎片中</span><br><span class="line"><span class="built_in">let</span> child</span><br><span class="line"><span class="keyword">while</span>(child==ul.firstChild)&#123;</span><br><span class="line">	df.appendChild(child)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//3、更新文档碎片中所有的li的文本</span><br><span class="line">Array.prototype.slice.call(fragment.childNodes).forEach(node=&gt;&#123;</span><br><span class="line">    <span class="keyword">if</span>(node.nodeType===1)&#123;//元素节点</span><br><span class="line">    	node.textContent = <span class="string">'updated data'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">//4、将文档碎片插入ul</span><br><span class="line">ul.appendChild(df)</span><br></pre></td></tr></table></figure></p>
+<h3 id="数据代理"><a href="#数据代理" class="headerlink" title="数据代理"></a>数据代理</h3><p>数据代理:通过一个对象代理对另一个对象中的属性进行操作(读/写)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">proxy:<span class="keyword">function</span>(key)&#123;</span><br><span class="line">	<span class="built_in">let</span> that = this</span><br><span class="line">	Object.defineproperty(that,key.&#123;</span><br><span class="line">		configurable:<span class="literal">false</span>,</span><br><span class="line">		enumerable:<span class="literal">true</span>,</span><br><span class="line">		get:<span class="keyword">function</span> <span class="function"><span class="title">proxyGetter</span></span>()&#123;</span><br><span class="line">			<span class="built_in">return</span> that._data[key]</span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="built_in">set</span>:<span class="keyword">function</span> proxySetter(newVal)&#123;</span><br><span class="line">			that._data[key] = newVal</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="模板解析"><a href="#模板解析" class="headerlink" title="模板解析"></a>模板解析</h3><h4 id="解析文本-大括号表达式"><a href="#解析文本-大括号表达式" class="headerlink" title="解析文本-大括号表达式"></a>解析文本-大括号表达式</h4><p>1、根据正则对象得到匹配的表达式字符串 子匹配(RegExp.$1)获取属性值<br>2、从data中取出表达式对应的属性值<br>3、将属性值设置为文本节点的textContent</p>
+<h4 id="解析指令-事件指令"><a href="#解析指令-事件指令" class="headerlink" title="解析指令-事件指令"></a>解析指令-事件指令</h4><p>1、从指令名中取出事件名<br>2、根据指令的值(表达式)从methods中得到对应的事件处理函数对象<br>3、给当前元素节点绑定事件名和回调函数的dom事件监听<br>4、指令解析完移除指令属性</p>
+<h3 id="数据劫持"><a href="#数据劫持" class="headerlink" title="数据劫持"></a>数据劫持</h3><p>1、修改属性 this.xxx = ‘xxx’<br>2、vm的set回调执行 (回调中修改的是data中的属性值)<br>3、触发data中属性的set回调执行<br>4、引起页面的修改</p>
+<h3 id="数据劫持涉及的类"><a href="#数据劫持涉及的类" class="headerlink" title="数据劫持涉及的类"></a>数据劫持涉及的类</h3><p>1、observer:给data重新定义属性 添加set/get方法<br>在get中建立dep和watcher之间的关系,在set中监视key属性变化,通知所有相关订阅者(watcher)<br>2、dep:对应属性名 通知watcher<br>3、watcher:对应表达式 建立dep和watcher的关系 数据变化后回调函数调用 更新界面</p>
+<h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">       监视data中所有层次的属性       与data属性一一对应</span><br><span class="line">                             [通知数据变化]</span><br><span class="line">         Observer----------------------------------------&gt;Dep----------------</span><br><span class="line">        /|                                                 |\`               \</span><br><span class="line">new MVVM                                                     \                \</span><br><span class="line">        \                                                     \                \</span><br><span class="line">      解析指令和&#123;&#123;&#125;&#125;编译(同时为表达式创建对应的watcher)        添加订阅者        通知所有相关的watcher </span><br><span class="line">          \|                                                    \                \</span><br><span class="line">        Complie ---------------------------------------------&gt;Watcher&lt;------------</span><br><span class="line">            \                                                  /</span><br><span class="line">             \                                                /</span><br><span class="line">              \                                              /</span><br><span class="line">               ------------------&gt;Updater&lt;-------------------</span><br><span class="line">                   初始化视图                   更新视图</span><br></pre></td></tr></table></figure>
+<h3 id="双向数据绑定"><a href="#双向数据绑定" class="headerlink" title="双向数据绑定"></a>双向数据绑定</h3><p>1、前提:建立在单向数据绑定model-&gt;view之上<br>2、流程<br>    在解析v-model指令时,给当前元素添加input事件<br>    当input的value变化时,将最新的值赋值给当前表达式对应的data属性上(触发set回调进入步骤1)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/14/vue-MVVM/" data-id="cjy6z9bqm000xu87kdsh8pi7g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-vue-router" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/13/vue-router/" class="article-date">
+  <time datetime="2019-07-13T06:13:36.000Z" itemprop="datePublished">2019-07-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/vue/">vue</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/13/vue-router/">前端路由</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="后端路由VS前端路由"><a href="#后端路由VS前端路由" class="headerlink" title="后端路由VS前端路由"></a>后端路由VS前端路由</h2><p>后端路由是指一个url对应的资源 对于不同的url请求返回不同的资源(前后交互)<br>前端路由是指前端根据url匹配对应的组件 在页面上进行组件渲染 通常使用hash模式#(不涉及后端)</p>
+<h3 id="Vue-router使用"><a href="#Vue-router使用" class="headerlink" title="Vue-router使用"></a>Vue-router使用</h3><p>1、引入<br>引入vue-router 全局生成构造函数VueRouter<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import Vue from <span class="string">'vue'</span></span><br><span class="line">import Router from <span class="string">'vue-router'</span></span><br><span class="line">Vue.use(Router)</span><br></pre></td></tr></table></figure></p>
+<p>2、创建模板对象用来测试<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> login = &#123;</span><br><span class="line">	template:<span class="string">'&lt;h1&gt;组件1&lt;/h1&gt;'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3、创建vue-router对象<br>构造函数接收一个参数 是一个配置对象<br>对象中的routes属性是一个路由数组<br>其中的每一个路由是一个匹配规则 决定改path对应的组件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const routerObj = new VueRouter(&#123;</span><br><span class="line">	//路由匹配规则</span><br><span class="line">	routes:[</span><br><span class="line">		&#123;path:<span class="string">'/'</span>,components:login&#125;</span><br><span class="line">	]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>4、在html中放入容器router-view<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">"app"</span>&gt;</span><br><span class="line">	&lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>5、vue实例与router关联<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var vm = new Vue(&#123;</span><br><span class="line">	el:<span class="string">"#app"</span>,</span><br><span class="line">	data:&#123;&#125;,</span><br><span class="line">	methods:&#123;&#125;,</span><br><span class="line">	router:routerObj</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>6、使用router-link实现跳转<br>router-link是vue-router提供的标签 默认渲染为a标签<br>属性to : 目标path<br>属性tag : 渲染后的标签<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;router-link to=<span class="string">"/login"</span> tag=<span class="string">"span"</span>&gt;注册&lt;/router-link&gt;</span><br></pre></td></tr></table></figure></p>
+<p>router-link的选中高亮<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.router-link-active&#123;</span><br><span class="line">	...some css code</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Vue-router传参"><a href="#Vue-router传参" class="headerlink" title="Vue-router传参"></a>Vue-router传参</h3><h4 id="使用query传参"><a href="#使用query传参" class="headerlink" title="使用query传参"></a>使用query传参</h4><p>router配置不变<br>router-link中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;router-link to=<span class="string">"/login?id=10"</span> tag=<span class="string">"span"</span>&gt;注册&lt;/router-link&gt;</span><br></pre></td></tr></table></figure></p>
+<p>子组件获取参数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.<span class="variable">$route</span>.query.id</span><br></pre></td></tr></table></figure></p>
+<h4 id="使用param传参"><a href="#使用param传参" class="headerlink" title="使用param传参"></a>使用param传参</h4><p>router配置中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const routerObj = new VueRouter(&#123;</span><br><span class="line">	//路由匹配规则</span><br><span class="line">	routes:[</span><br><span class="line">		&#123;path:<span class="string">'/:id'</span>,components:login&#125;</span><br><span class="line">	]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>子组件获取参数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.<span class="variable">$route</span>.param.id</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/13/vue-router/" data-id="cjy6z9brv001du87k6x489mwn" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-algorithm-sqrtNumberGame" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/13/algorithm-sqrtNumberGame/" class="article-date">
+  <time datetime="2019-07-13T06:13:36.000Z" itemprop="datePublished">2019-07-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/13/algorithm-sqrtNumberGame/">数字游戏</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><font color="red">递归过不了数据 卷子交完才想起来可以用动态规划 难过。。。</font></p>
+<h2 id="数字游戏"><a href="#数字游戏" class="headerlink" title="数字游戏"></a>数字游戏</h2><p>给定一个数字 若可以开方 则去开方 否则减一 循环次操作 多少次后数字变为1？</p>
+<h4 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> res = 0</span><br><span class="line"><span class="keyword">function</span> numberGame(num)&#123;</span><br><span class="line">	<span class="keyword">if</span>(num==1)&#123;</span><br><span class="line">		<span class="built_in">return</span> res</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">let</span> nextparam</span><br><span class="line">	<span class="built_in">let</span> n = Math.sqrt(num)</span><br><span class="line">	<span class="keyword">if</span>(Math.floor(n)==n)&#123;</span><br><span class="line">		nextparam = n</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		nextparam = n-1</span><br><span class="line">	&#125;</span><br><span class="line">	res++</span><br><span class="line">	numberGame(nextparam)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> numberGameDP(num)&#123;</span><br><span class="line">	<span class="built_in">let</span> dp = []</span><br><span class="line">	dp[0] = 0</span><br><span class="line">	dp[1] = 0</span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> i=2;i&lt;=number;i++)&#123;</span><br><span class="line">		<span class="built_in">let</span> c = Math.sqrt(num)</span><br><span class="line">		<span class="keyword">if</span>(c == Math.floor(c))&#123;</span><br><span class="line">			dp[i] = dp[c]+1</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			dp[i] = dp[i-1]+1</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	console.log(dp[num])</span><br><span class="line">	<span class="built_in">return</span> dp[num]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/13/algorithm-sqrtNumberGame/" data-id="cjy6z9bp40006u87krxu36n7j" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-front-vdom" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/11/front-vdom/" class="article-date">
+  <time datetime="2019-07-11T07:11:02.000Z" itemprop="datePublished">2019-07-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/11/front-vdom/">Virtual DOM</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="DOM-VS-虚拟DOM"><a href="#DOM-VS-虚拟DOM" class="headerlink" title="DOM VS 虚拟DOM"></a>DOM VS 虚拟DOM</h3><h3 id="传统DOM"><a href="#传统DOM" class="headerlink" title="传统DOM"></a>传统DOM</h3><p><strong>传统DOM更新:</strong><br>真实页面对应的DOM树在每次页面更新时都需要手动操作DOM进行更新<br>JS<font color="red">每次</font>修改DOM DOM树都会更新一次(无缓冲)<br>即做一次如下操作<br>1、HTML Parser生成DOM Tree<br>2、CSS Parser生成样式表<br>3、DOM Tree关联样式表 生成 Render Tree<br>4、页面布局Layout<br>5、页面绘制Paint<br>产生<strong>大量</strong>的资源浪费 效率极低<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">           update</span><br><span class="line">javascript-------&gt;DOM</span><br><span class="line">    ^             |</span><br><span class="line">    |    event    |</span><br><span class="line">    ---------------</span><br></pre></td></tr></table></figure></p>
+<h3 id="虚拟DOM"><a href="#虚拟DOM" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h3><p>是一种前端视图展示和更新策略<br>虚拟DOM是一个<font color="red">轻量级JavaScript对象</font><br>类似于</p>
+<pre><code class="bash"><span class="built_in">let</span> vNode = {
+    tag:<span class="string">'div'</span>,
+    attributes:{
+        id:<span class="string">'xxx'</span>,
+        class:<span class="string">'xxx'</span>
+    },
+    children:[
+        ...
+    ]
+}
+</code></pre>
+<p>JS需要修改dom时 操作的是js变量v-dom 效率更高</p>
+<p><strong>传统DOM更新:</strong><br>JS n次操作v-dom后 v-dom可以一次性反映(<font color="red">Diff算法</font>)到dom中(缩减操作次数 避免性能浪费)<br>优点:更新html效率高,使用vdom更新html真实DOM时首先会对比上一次的状态 (<font color="red">Diff算法</font>)只更新发生改变的dom<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">           update              update</span><br><span class="line">javascript-------&gt;Virtual DOM---------&gt;DOM</span><br><span class="line">    ^                 |  ^              |</span><br><span class="line">    |      event      |  |     event    |</span><br><span class="line">    -------------------  ----------------</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/11/front-vdom/" data-id="cjy6z9bq4000lu87kdrabp1zt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-net-https" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/09/net-https/" class="article-date">
+  <time datetime="2019-07-09T08:53:05.000Z" itemprop="datePublished">2019-07-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/09/net-https/">HTTPS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>https = http + ssl (secure socket layer)<br>端口443</p>
+<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>http的明文传输可能被拦截 引起重要信息泄露</p>
+<h3 id="加密手段"><a href="#加密手段" class="headerlink" title="加密手段"></a>加密手段</h3><h4 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h4><p>常用算法:DES 3DES AES<br>原理:使用密钥s加密后必须使用s解密<br>优点:计算量小,加密解密速度较快,适合加密较大的数据<br>缺点:密钥的传输容易泄露 一个用户对应一个密钥 服务器管理麻烦</p>
+<h4 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h4><p>常用算法:RSA<br>原理:有一个公钥(public key)和一个私钥(private key),由加密算法生成.公钥加密只能私钥解密,私钥加密只能公钥解密<br>服务器保存了公钥和私钥,将公钥传递给客户端,客户端使用公钥加密后传递数据发送到服务器,服务器使用私钥解密<br>优点:加密解密使用不用钥匙,可以传输公钥,数据传输安全<br>缺点:计算量大,加密解密速度较慢</p>
+<h3 id="https加密过程"><a href="#https加密过程" class="headerlink" title="https加密过程"></a>https加密过程</h3><p>https结合了<font color="red">对称解密</font>和<font color="red">非对称加密</font>的优势,对数据进行加密和解密步骤如下<br>1、客户端对服务器发起https请求<br>2、服务器生成一个公钥和一个私钥,将SSL数字证书(包含公钥、服务器相关信息)发送给客户端<br>3、客户端解析SSL数字证书拿到公钥,验证服务器信息,客户端生成一个随机数使用公钥加密<br>4、客户端向服务器传输公钥加密后的随机数<br>5、服务器获取这个公钥加密后的随机数后用<red>私钥</red>解密<br>6、客户端使用随机数作为密钥对数据进行对称加密(此时服务器也知道密钥因此无需传输密钥)后传输<br>7、服务器获取密钥加密的数据 使用随机数密钥解密数据</p>
+<h4 id="CA证书"><a href="#CA证书" class="headerlink" title="CA证书"></a>CA证书</h4><p>域名型(DVSSL)<br>企业型(OVSSL) 百度<br>增强型(EVSSL) 苹果</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/09/net-https/" data-id="cjy6z9bqs0013u87klqjtk08g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-webapp-rem" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/01/webapp-rem/" class="article-date">
+  <time datetime="2019-07-01T10:00:48.000Z" itemprop="datePublished">2019-07-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/移动端/">移动端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/01/webapp-rem/">移动端适配之rem布局</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="PC端-移动端区别"><a href="#PC端-移动端区别" class="headerlink" title="PC端/移动端区别"></a>PC端/移动端区别</h3><pre><code>效果:
+    PC:鼠标经过效果(伪类选择器)
+    移动端:没有鼠标,只有轮播图(点击 滑动 效果)等
+浏览器:
+    PC:浏览器兼容(多内核)
+    移动端:(webkit内核)手机适配(分辨率不同 显示页面效果不同) 
+</code></pre><h3 id="视口"><a href="#视口" class="headerlink" title="视口"></a>视口</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=<span class="string">"viewport"</span> content=<span class="string">"width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>width=device-width 页面宽度等于设备宽度<br>user-scalable=no 不允许用户手动缩放页面<br>initial-scale=1.0 初始缩放比例1:1<br>maximum-scale=1.0 最大缩放比例1:1<br>minimum-scale=1.0 最小缩放比例1:1</p>
+<h3 id="Rem"><a href="#Rem" class="headerlink" title="Rem"></a>Rem</h3><p>rem = root element<br>rem获取html元素(根元素)的字体大小<br>chrome默认html的字体大小16px =&gt; 1rem=16px<br>1rem = 16px<br>   ? = 100px<br>不好计算<br>我们可以规定1rem = 100px<br>那么对于不同的分辨率(320,375,414…)<br>只需要使用媒体查询修改html{fontsize}即可</p>
+<p>常见手机分辨率</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">手机</th>
+<th style="text-align:center">分辨率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">iphone5/5s</td>
+<td style="text-align:center">320px</td>
+</tr>
+<tr>
+<td style="text-align:center">iphone6/6s</td>
+<td style="text-align:center">375px</td>
+</tr>
+<tr>
+<td style="text-align:center">iphone6sPlus</td>
+<td style="text-align:center">414px</td>
+</tr>
+</tbody>
+</table>
+<h4 id="以iphone5为基准"><a href="#以iphone5为基准" class="headerlink" title="以iphone5为基准"></a><font color="red">以iphone5为基准</font></h4><p>font-size:100px<br>那么<br>iphone6/6s<br>375:?=320:100<br>font-size=375x100/320=117.1875px;</p>
+<p>iphone6P/6SP<br>414:?=320:100<br>font-size=414x100/320=129.375px;</p>
+<h4 id="以iphone6为基准"><a href="#以iphone6为基准" class="headerlink" title="以iphone6为基准"></a><font color="red">以iphone6为基准</font></h4><p>font-size:100px<br>那么<br>iphone5/5s<br>320:?=375:100<br>font-size=320x100/375=85.33px;</p>
+<p>iphone6P/6SP<br>414:?=375:100<br>font-size=414x100/375=110.4px;</p>
+<h3 id="DPR"><a href="#DPR" class="headerlink" title="DPR"></a>DPR</h3><p>DPR:设备像素比 </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">手机</th>
+<th style="text-align:center">分辨率</th>
+<th>DPR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">iphone5/5s</td>
+<td style="text-align:center">320px</td>
+<td>2</td>
+</tr>
+<tr>
+<td style="text-align:center">iphone6/6s</td>
+<td style="text-align:center">375px</td>
+<td>2</td>
+</tr>
+<tr>
+<td style="text-align:center">iphone6sPlus</td>
+<td style="text-align:center">414px</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>设计稿依照分辨率xdpr设计<br>一般分为640px(参照iphone5)和750px(参照iphone6)<br>使用时需要将font-size缩小才能正确显示</p>
+<p>对于750px的设计稿<br>iphone6/6s font-size:50px;<br>iphone5/5s font-size:42.67px;<br>iphone6Plus font-size:55.2px</p>
+<h3 id="最终代码"><a href="#最终代码" class="headerlink" title="最终代码"></a>最终代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@media screen and (min-width: 320px)&#123;</span><br><span class="line">	html&#123;</span><br><span class="line">		font-size: 42.66px;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">@media screen and (min-width: 375px)&#123;</span><br><span class="line">	html&#123;</span><br><span class="line">		font-size: 50px;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">@media screen and (min-width: 414px)&#123;</span><br><span class="line">	html&#123;</span><br><span class="line">		font-size: 55.2px;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/01/webapp-rem/" data-id="cjy6z9bqq0011u87kfine7r7l" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-algorithm-rain" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/21/algorithm-rain/" class="article-date">
+  <time datetime="2019-06-21T07:21:42.000Z" itemprop="datePublished">2019-06-21</time>
 </a>
     
   <div class="article-category">
@@ -80,7 +514,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/01/algorithm-windowString/">窗口最短连续字符串</a>
+      <a class="article-title" href="/2019/06/21/algorithm-rain/">接雨水</a>
     </h1>
   
 
@@ -88,14 +522,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>窗口最小子串<br>给两个字符串s1和s2<br>求s1中最短连续子串 要求包含s2中的所有字符<br>例如s1=”adobecodebanc” s2=”abc”<br>即求”adobecodebanc”中包含”a”、”b”、”c”的最短连续子串<br>结果是”banc” 长度是4</p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>很显然需要进行扫描抽取子串和比较 为此需要一个辅助函数f(a,b)<br>用来检测a中是否包含b的所有字符<br>可以设计一下这个匹配函数:<br>把a叫做[目标字符串] b叫做[比较字符串]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function test(a,b)&#123;</span><br><span class="line">	//扫描[对比字符串]获取每一个字符拿去比较</span><br><span class="line">	for(let i=0;i&lt;b.length;i++)&#123;</span><br><span class="line">		//当前取到字符是letter</span><br><span class="line">		let letter = b.charAt(i)</span><br><span class="line">		//a里有没有letter呢？</span><br><span class="line">		if(a.indexOf(letter)!=-1)&#123;</span><br><span class="line">			//有~而且位置是a.indexOf(letter)</span><br><span class="line">			//把这个地方的字符去掉 </span><br><span class="line">			a=a.replace(&quot;letter&quot;,&quot;&quot;)</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			//没有~直接出局</span><br><span class="line">			return -1</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	//循环结束了也没有出局 证明匹配成功了</span><br><span class="line">	return 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>辅助函数搞定了 接下来继续考虑<br>对于目标字符串”adobecodebanc”<br>用i从左向右扫描 使用一个变量current记录当前的子串<br>设置一个begin开始指向0位置<br>那么begin和i包含区域为当前连续子串current<br>i经过一次for自增1<br>那么begin何时增加呢?<br>当current中包含了[比较字符串]中的全部元素<br>且current去掉第一个字符串仍然包含[比较字符串]中的全部元素<br>所以这里可以写成while(current去掉第一位包含所有[比较字符串]){begin++ current=current去掉第一个字符}<br>对每次循环的current进行一次检测 若其长度最短 则保存到结果中<br>循环结束后结果中的字符串即为所求</p>
-<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">辅助比较函数</span><br><span class="line">参数:str1=&gt;[目标串] str2=&gt;[比较串]</span><br><span class="line"><span class="keyword">function</span> <span class="built_in">test</span>(str1,str2)&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> i=0;i&lt;str2.length;i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(str1.indexOf(str2.charAt(i))!=-1)&#123;</span><br><span class="line">			<span class="built_in">let</span> letter = str2.charAt(i)</span><br><span class="line">			str1 = str1.replace(letter,<span class="string">""</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="built_in">return</span> <span class="literal">false</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">主要函数</span><br><span class="line">参数:str1=&gt;[目标串] str2=&gt;[比较串]</span><br><span class="line"><span class="keyword">function</span> win(str1,str2) &#123;</span><br><span class="line">	<span class="built_in">let</span> min = str1.length</span><br><span class="line">	<span class="built_in">let</span> res = <span class="string">""</span></span><br><span class="line">	<span class="built_in">let</span> begin = 0</span><br><span class="line">	<span class="built_in">let</span> current = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> i=0;i&lt;str1.length;i++)&#123;</span><br><span class="line">		current = current+str1.charAt(i)</span><br><span class="line">		<span class="keyword">while</span>(<span class="built_in">test</span>(current.substr(1),str2))&#123;</span><br><span class="line">			begin++</span><br><span class="line">			current = current.substr(1)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">test</span>(current,str2))&#123;</span><br><span class="line">			<span class="keyword">if</span>(current.length&lt;min)&#123;</span><br><span class="line">				min = current.length</span><br><span class="line">				res = current</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>接雨水(BFS算法)<br>给定一个水槽 形式为二维数组 每个值为该位置的水槽深度<br>求下雨后水槽中接到的雨水量 一个单位为1</p>
+<p>例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 4 3 2 3 2    接雨水   1 4 3 2 3 2</span><br><span class="line">3 1 2 1 2 4   =====&gt;   3 2 2 2 2 4    雨水漫过了[2][1]和[2][3]的位置 所以结果为2</span><br><span class="line">2 3 3 3 3 1            2 3 3 3 3 1</span><br></pre></td></tr></table></figure></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>想象水从水槽边缘慢入水槽,将边上数据放入顺序队列,对头为最小值<br>水从队头元素处进入水槽 进行上下左右的BFS<br>若当前元素比扫描的元素值大 被扫描元素有水漫过 高度成为扫描者的高度 此时接到了雨水为两者差值<br>将扫所到的元素 放入顺序队列 并标记为已访问<br>若当前元素比扫描的元素值小 同样将被扫描元素 放入顺序队列 标记为已访问 继续搜索<br>扫描一个出队一次 知道队空位置即可</p>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">初始化接口 初始化顺序队列queue和标记数组mark</span><br><span class="line"><span class="keyword">function</span> interfaceForRain(arr) &#123;</span><br><span class="line">	<span class="built_in">let</span> queue=[],mark=[]</span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> i=0;i&lt;arr.length;i++)&#123;</span><br><span class="line">		mark[i] = []</span><br><span class="line">		<span class="keyword">for</span>(<span class="built_in">let</span> j=0;j&lt;arr[0].length;j++)&#123;</span><br><span class="line">			mark[i][j]=0</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> i=0;i&lt;arr[0].length;i++)&#123;</span><br><span class="line">		queue.push([0,i,arr[0][i]]) //第一行</span><br><span class="line">		mark[0][i] =1 </span><br><span class="line">		queue.push([arr.length-1,i,arr[arr.length-1][i]])//最后一行</span><br><span class="line">		mark[arr.length-1][i] =1 </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> i=1;i&lt;arr.length-1;i++)&#123;</span><br><span class="line">		queue.push([i,0,arr[i][0]]) //第一列</span><br><span class="line">		mark[i][0] = 1</span><br><span class="line">		queue.push([i,arr[0].length-1,arr[i][arr[0].length-1]])//最后一列</span><br><span class="line">		mark[i][arr[0].length-1] = 1</span><br><span class="line">	&#125;</span><br><span class="line">	queue.sort((a,b)=&gt;&#123;</span><br><span class="line">		<span class="built_in">return</span> a[2]-b[2]</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		queue:queue,</span><br><span class="line">		mark:mark</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">接雨水</span><br><span class="line"><span class="keyword">function</span> s(arr) &#123;</span><br><span class="line">	<span class="built_in">let</span> rain = 0 //保存结果</span><br><span class="line">	<span class="built_in">let</span> dx = [-1,1,0,0] //方向数组x</span><br><span class="line">	<span class="built_in">let</span> dy = [0,0,-1,1] //方向数组y</span><br><span class="line">	<span class="keyword">if</span>(arr.length&lt;=2||arr[0].length&lt;=2)&#123;</span><br><span class="line">		<span class="built_in">return</span> 0</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">let</span> res = interfaceForRain(arr)</span><br><span class="line">	<span class="built_in">let</span> q = res.queue</span><br><span class="line">	<span class="built_in">let</span> m = res.mark</span><br><span class="line">	<span class="keyword">while</span>(q.length)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="built_in">let</span> i=0;i&lt;4;i++)&#123;</span><br><span class="line">			<span class="built_in">let</span> newx = q[0][0]+dx[i]</span><br><span class="line">			<span class="built_in">let</span> newy = q[0][1]+dy[i]</span><br><span class="line">			<span class="keyword">if</span>(newx&lt;0||newx&gt;=arr.length||newy&lt;0||newy&gt;=arr[0].length||m[newx][newy]==1)&#123;</span><br><span class="line">				<span class="built_in">continue</span></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			<span class="keyword">if</span>(q[0][2]-arr[newx][newy]&gt;0)&#123;</span><br><span class="line">				rain+=q[0][2]-arr[newx][newy]</span><br><span class="line">				arr[newx][newy] = q[0][2]</span><br><span class="line">				m[newx][newy] = 1</span><br><span class="line">				q.push([newx,newy,q[0][2]])</span><br><span class="line">				q.sort((a,b)=&gt;&#123;</span><br><span class="line">					<span class="built_in">return</span> a[2]-b[2]</span><br><span class="line">				&#125;)</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				m[newx][newy] = 1</span><br><span class="line">				q.push([newx,newy,q[0][2]])</span><br><span class="line">				q.sort((a,b)=&gt;&#123;</span><br><span class="line">					<span class="built_in">return</span> a[2]-b[2]</span><br><span class="line">				&#125;)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		q.shift()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> rain</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/01/algorithm-windowString/" data-id="cjxodhbdr0001i47ks1tydiv2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/21/algorithm-rain/" data-id="cjy6z9bpn000cu87ka5t81au0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -105,16 +539,12 @@
 
 
   
-    <article id="post-js-closure" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-webpack" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/04/07/js-closure/" class="article-date">
-  <time datetime="2019-04-07T02:48:35.000Z" itemprop="datePublished">2019-04-07</time>
+    <a href="/2019/06/11/webpack/" class="article-date">
+  <time datetime="2019-06-11T12:37:59.000Z" itemprop="datePublished">2019-06-11</time>
 </a>
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
   </div>
   <div class="article-inner">
     
@@ -123,7 +553,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/07/js-closure/">闭包</a>
+      <a class="article-title" href="/2019/06/11/webpack/">webpack</a>
     </h1>
   
 
@@ -131,59 +561,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="理解闭包"><a href="#理解闭包" class="headerlink" title="理解闭包"></a>理解闭包</h2><pre><code>1、如何产生闭包?
-    当一个嵌套的内部函数 引用了嵌套外部函数的局部变量时 产生闭包
-2、闭包的理解
-    *第一种:嵌套的内部函数
-    *第二种:包含被引用变量(函数)的对象
-3、产生闭包的条件
-    *函数嵌套
-    *内部函数引用了外部函数的数据(变量、函数)
-    *执行外部函数
-4、闭包的作用
-    *使用函数内部的局部变量在函数执行完后,仍存活在内存中(延长局部变量的生命周期)
-    *在函数外部可以操作(读写)函数内部的数据(变量/函数)
-5、闭包的生命周期
-    *产生:在嵌套内部函数定义执行完成时产生
-    *死亡:在嵌套内部函数成为垃圾对象时
-    *f = null
-</code></pre><h3 id="例如"><a href="#例如" class="headerlink" title="例如"></a>例如</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn1</span></span>() &#123;</span><br><span class="line">	var a = 2;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;//执行函数定义就会产生闭包(不用调用内部函数)</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">f1()</span><br></pre></td></tr></table></figure>
-<h2 id="常见的闭包"><a href="#常见的闭包" class="headerlink" title="常见的闭包"></a>常见的闭包</h2><pre><code>1、将函数作为另一个函数的返回值
-2、将函数作为实参传给另一个函数调用
-</code></pre><h3 id="例-将函数作为另一个函数的返回值"><a href="#例-将函数作为另一个函数的返回值" class="headerlink" title="例(将函数作为另一个函数的返回值)"></a>例(将函数作为另一个函数的返回值)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">f1</span></span>() &#123;</span><br><span class="line">	var a = 2</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;</span><br><span class="line">		a++</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f3</span></span>() &#123;</span><br><span class="line">		a--</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		f2:f2,</span><br><span class="line">		f3:f3</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var f = f1()</span><br><span class="line">f.f2() //3</span><br><span class="line">f.f2() //4</span><br><span class="line">f.f3() //3</span><br><span class="line">f.f3() //2</span><br><span class="line">f.f3() //1</span><br></pre></td></tr></table></figure>
-<h2 id="常见的闭包-1"><a href="#常见的闭包-1" class="headerlink" title="常见的闭包"></a>常见的闭包</h2><pre><code>1、将函数作为另一个函数的返回值
-2、将函数作为实参传给另一个函数调用
-</code></pre><h3 id="例-将函数作为另一个函数的返回值-1"><a href="#例-将函数作为另一个函数的返回值-1" class="headerlink" title="例(将函数作为另一个函数的返回值)"></a>例(将函数作为另一个函数的返回值)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">f1</span></span>() &#123;</span><br><span class="line">	var a = 2</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;</span><br><span class="line">		a++</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">f3</span></span>() &#123;</span><br><span class="line">		a--</span><br><span class="line">		console.log(a)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		f2:f2,</span><br><span class="line">		f3:f3</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var f = f1()</span><br><span class="line">f.f2() //3</span><br><span class="line">f.f2() //4</span><br><span class="line">f.f3() //3</span><br><span class="line">f.f3() //2</span><br><span class="line">f.f3() //1</span><br></pre></td></tr></table></figure>
-<h3 id="例-将函数作为实参传给另一个函数调用"><a href="#例-将函数作为实参传给另一个函数调用" class="headerlink" title="例(将函数作为实参传给另一个函数调用)"></a>例(将函数作为实参传给另一个函数调用)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> showDelay(msg,time) &#123;</span><br><span class="line">	setTimeout(<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(msg)  //内部函数引用了外部函数的局部变量msg</span><br><span class="line">	&#125;,time)</span><br><span class="line">&#125;</span><br><span class="line">showDelay(<span class="string">"abc"</span>,2000)</span><br></pre></td></tr></table></figure>
-<h2 id="闭包构建JS模块-应用"><a href="#闭包构建JS模块-应用" class="headerlink" title="闭包构建JS模块(应用)"></a>闭包构建JS模块(应用)</h2><pre><code>创建具有特定功能的js文件
-将所有的数据和功能封装在一个函数内部(私有化)
-只向外暴露一个包含n个方法的对象或函数
-模块的使用者,只需要通过模块暴露的对象调用方法来实现对应功能
-</code></pre><h4 id="例"><a href="#例" class="headerlink" title="例"></a>例</h4><h6 id="module-js"><a href="#module-js" class="headerlink" title="module.js"></a>module.js</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">//第一种写法</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">myModule</span></span>() &#123;</span><br><span class="line">	var msg = <span class="string">"My Message"</span></span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doSomething</span></span>() &#123;</span><br><span class="line">		console.log(msg.toUpperCase())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doOtherthing</span></span>() &#123;</span><br><span class="line">		console.log(msg.toLowerCase())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		doSomething:doSomething,</span><br><span class="line">		doOtherthing:doOtherthing</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//第二种写法</span><br><span class="line">(<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	var msg = <span class="string">"My Message"</span></span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doSomething</span></span>() &#123;</span><br><span class="line">		console.log(msg.toUpperCase())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">doOtherthing</span></span>() &#123;</span><br><span class="line">		console.log(msg.toLowerCase())</span><br><span class="line">	&#125;</span><br><span class="line">	window.myModule2 = &#123;</span><br><span class="line">		doSomething:doSomething,</span><br><span class="line">		doOtherthing:doOtherthing</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
-<h6 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span> src=<span class="string">"module.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">//第一种写法的调用</span><br><span class="line">var fn = myModule()</span><br><span class="line">fn.doSomething()</span><br><span class="line">fn.doOtherthing()</span><br><span class="line"></span><br><span class="line">//第二种写法的调用</span><br><span class="line">myModule2.doSomething()</span><br><span class="line">myModule2.doOtherthing()</span><br></pre></td></tr></table></figure>
-<h2 id="闭包的缺点与解决方案"><a href="#闭包的缺点与解决方案" class="headerlink" title="闭包的缺点与解决方案"></a>闭包的缺点与解决方案</h2><pre><code>缺点
-    1、函数执行完后,函数内部的局部变量没有释放,占用内存时间会变长
-    2、造成内存泄露
-解决方案
-    1、能不用就不用闭包
-    2、及时释放
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fa1</span></span>() &#123;</span><br><span class="line">	var arr = new Array(10000)</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">fa2</span></span>() &#123;</span><br><span class="line">		console.log(arr.length)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> fa2</span><br><span class="line">&#125;</span><br><span class="line">var res = fa1()</span><br><span class="line">res()</span><br><span class="line">res = null //释放</span><br></pre></td></tr></table></figure>
-<h2 id="内存溢出与内存泄露"><a href="#内存溢出与内存泄露" class="headerlink" title="内存溢出与内存泄露"></a>内存溢出与内存泄露</h2><pre><code>内存溢出
-    内存溢出是一种程勋运行出现的错误
-    当程序运行需要的内存超过了当前剩余内存是,跑出内存溢出错误
-内存泄露
-    占用的内存没有及时释放
-    内存泄露积累过多容易产生内存溢出
-    常见的内存泄露
-        意外的全局变量
-        没有及时清理的计时器或回调函数
-        闭包
-</code></pre><h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><h4 id="1"><a href="#1" class="headerlink" title="1"></a>1</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">var name = <span class="string">"The Window"</span></span><br><span class="line">var object = &#123;</span><br><span class="line">	name:<span class="string">"My Object"</span>,</span><br><span class="line">	getName:<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		<span class="built_in">return</span> <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">			<span class="built_in">return</span> this.name</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(object.getName()())//? The Window</span><br><span class="line"></span><br><span class="line">var name2 = <span class="string">"The Winodw"</span></span><br><span class="line">var object2 = &#123;</span><br><span class="line">	name:<span class="string">"My Object"</span>,</span><br><span class="line">	getName:<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		var that = this</span><br><span class="line">		<span class="built_in">return</span> <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">			<span class="built_in">return</span> that.name</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(object2.getName()())//? My Object</span><br></pre></td></tr></table></figure>
-<h4 id="2"><a href="#2" class="headerlink" title="2"></a>2</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fun(n,o) &#123;</span><br><span class="line">	console.log(o)</span><br><span class="line">	<span class="built_in">return</span> &#123;</span><br><span class="line">		fun:<span class="keyword">function</span>(m) &#123;</span><br><span class="line">			<span class="built_in">return</span> fun(m,n)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h2><p>模块递归打包器</p>
+<p>通过入口文件寻找关联的文件 进行打包 最终生成单独的可在html引入的js文件</p>
+<h4 id="打包js文件"><a href="#打包js文件" class="headerlink" title="打包js文件"></a>打包js文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//webpack.config.js</span><br><span class="line">const path = require(<span class="string">'path'</span>)</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">	//入口文件</span><br><span class="line">	entry:<span class="string">'./src/index.js'</span></span><br><span class="line">	//模式</span><br><span class="line">	mode:<span class="string">'development'</span></span><br><span class="line">	//出口文件</span><br><span class="line">	output:&#123;</span><br><span class="line">		filename:<span class="string">'main.js'</span>,</span><br><span class="line">		path:path.resolve(__dirname,<span class="string">'dist'</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="打包css-sass文件"><a href="#打包css-sass文件" class="headerlink" title="打包css/sass文件"></a>打包css/sass文件</h4><h6 id="需引入模块"><a href="#需引入模块" class="headerlink" title="需引入模块"></a>需引入模块</h6><p>sass-loader:解析sass文件<br>css-loader:解析css文件<br>style-loader:生成style标签 注入标签到index.html<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">//webpack.config.js</span><br><span class="line">const path = require(<span class="string">'path'</span>)</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">	//入口文件</span><br><span class="line">	entry:<span class="string">'./src/index.js'</span></span><br><span class="line">	//模式</span><br><span class="line">	mode:<span class="string">'development'</span></span><br><span class="line">	//出口文件</span><br><span class="line">	output:&#123;</span><br><span class="line">		filename:<span class="string">'main.js'</span>,</span><br><span class="line">		path:path.resolve(__dirname,<span class="string">'dist'</span>)</span><br><span class="line">	&#125;,</span><br><span class="line">	module:&#123;</span><br><span class="line">		//处理规则(不同模块处理规则不同)</span><br><span class="line">		rules:[</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">test</span>:/\.(sa|c|sc)ss$/,</span><br><span class="line">				//从右向左处理</span><br><span class="line">				use:[</span><br><span class="line">					<span class="string">'style-loader'</span>,</span><br><span class="line">					&#123;</span><br><span class="line">						loader:<span class="string">'css-loader'</span>,</span><br><span class="line">						options:&#123;</span><br><span class="line">							//方便寻找样式位置</span><br><span class="line">							sourceMap:<span class="literal">true</span></span><br><span class="line">						&#125;</span><br><span class="line">					&#125;,</span><br><span class="line">					&#123;</span><br><span class="line">						loader:<span class="string">'sass-loader'</span>,</span><br><span class="line">						options:&#123;</span><br><span class="line">							//方便寻找样式位置</span><br><span class="line">							sourceMap:<span class="literal">true</span></span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				]</span><br><span class="line">			&#125;</span><br><span class="line">		]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/07/js-closure/" data-id="cjxodhbe00005i47kfi2o2t4g" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/11/webpack/" data-id="cjy6z9bry001eu87k57ns29vy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -193,282 +579,10 @@
 
 
   
-    <article id="n &#39;js_prototype&#39; hexo n n-js-prototype" class="article article-type-n &#39;js_prototype&#39; hexo n n" itemscope itemprop="blogPost">
+    <article id="post-algorithm-combineArray" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/04/03/js-prototype/" class="article-date">
-  <time datetime="2019-04-03T03:30:11.000Z" itemprop="datePublished">2019-04-03</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/03/js-prototype/">原型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/2019/04/03/js-prototype/1.png" alt="avatar"></p>
-<h2 id="1-原型"><a href="#1-原型" class="headerlink" title="1 原型"></a>1 原型</h2><h3 id="1-1-函数的prototype属性"><a href="#1-1-函数的prototype属性" class="headerlink" title="1.1 函数的prototype属性"></a>1.1 函数的prototype属性</h3><pre><code>每个函数都有一个prototype属性,默认指向一个Object空对象(原型对象)
-原型对象有一个constructor属性,指向函数对象
-</code></pre><h3 id="1-2-给原型对象添加属性-一般是方法"><a href="#1-2-给原型对象添加属性-一般是方法" class="headerlink" title="1.2 给原型对象添加属性(一般是方法)"></a>1.2 给原型对象添加属性(一般是方法)</h3><pre><code>作用:函数的所有实例对象自动拥有原型中的属性
-</code></pre><h3 id="1-3-代码"><a href="#1-3-代码" class="headerlink" title="1.3 代码"></a>1.3 代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//每个函数都有一个prototype属性,默认指向一个Object空对象(原型对象)</span><br><span class="line">console.log(Date.prototype) //? </span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">F</span></span>()&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">console.log(F.prototype) //? 空对象(默认)</span><br><span class="line"></span><br><span class="line">//给原型对象添加属性(一般是方法) 实例对象可以访问</span><br><span class="line">F.prototype.test = <span class="function"><span class="title">function</span></span>()&#123;</span><br><span class="line">	console.log(<span class="string">"test"</span>)</span><br><span class="line">&#125;</span><br><span class="line">console.log(F.prototype)</span><br><span class="line"></span><br><span class="line">var f = new F()</span><br><span class="line">f.test()   //<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
-<h2 id="2-显式原型和隐式原型"><a href="#2-显式原型和隐式原型" class="headerlink" title="2 显式原型和隐式原型"></a>2 显式原型和隐式原型</h2><h3 id="2-1解释"><a href="#2-1解释" class="headerlink" title="2.1解释"></a>2.1解释</h3><pre><code>函数的prototype属性:在定义函数时自动添加,默认值是一个空Object对象
-
-对象的__proto__属性:创建对象时自动添加,默认值是构造函数的prototype属性值
-
-写代码时直接操作显式原型,但不能直接操作隐式原型    
-</code></pre><h3 id="2-2代码"><a href="#2-2代码" class="headerlink" title="2.2代码"></a>2.2代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Fn</span></span>()&#123;   //隐藏执行了 this.prototype = &#123;&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">//1、每个函数都有一个prototype属性,默认指向一个Object空对象(原型对象)</span><br><span class="line">console.log(Fn.prototype)</span><br><span class="line"></span><br><span class="line">//2、每个实例对象都有一个__proto__ 称为隐式原型</span><br><span class="line">var fn = new Fn() //隐藏执行了 this.__proto__ = Fn.prototype</span><br><span class="line">console.log(fn.__proto__)</span><br><span class="line">//3、对象的隐式原型的值为其对应构造函数的显示原型的值</span><br><span class="line">console.log(Fn.prototype === fn.__proto__)  //<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<h2 id="3-原型链"><a href="#3-原型链" class="headerlink" title="3 原型链"></a>3 原型链</h2><h3 id="3-1解释"><a href="#3-1解释" class="headerlink" title="3.1解释"></a>3.1解释</h3><pre><code>访问一个对象的属性时
-  先在自身属性中查找,找到返回
-  如果没有,再沿着__proto__这条链向上查找,找到返回
-  如果最终没找到,返回undefined
-别名:隐式原型链
-作用:查找对象的属性(方法)
-</code></pre><h3 id="3-2代码"><a href="#3-2代码" class="headerlink" title="3.2代码"></a>3.2代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">F1</span></span>() &#123;</span><br><span class="line">	this.test1 = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(<span class="string">"test1"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">F1.prototype.test2 = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	console.log(<span class="string">"test2"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var f1 = new F1()</span><br><span class="line">f1.test1()</span><br><span class="line">f1.test2()</span><br><span class="line">console.log(f1.toString())</span><br><span class="line">// f1.test3()</span><br><span class="line">console.log(f1)</span><br></pre></td></tr></table></figure>
-<h2 id="4-注意"><a href="#4-注意" class="headerlink" title="4 注意"></a>4 注意</h2><h4 id="4-1-函数的显式原型指向对象默认是空Object实例对象-Object是个例外"><a href="#4-1-函数的显式原型指向对象默认是空Object实例对象-Object是个例外" class="headerlink" title="4.1 函数的显式原型指向对象默认是空Object实例对象(Object是个例外)"></a>4.1 函数的显式原型指向对象默认是空Object实例对象(Object是个例外)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">console.log(F1.prototype instanceof Object)//<span class="literal">true</span></span><br><span class="line">console.log(Object.prototype instanceof Object)//<span class="literal">false</span></span><br><span class="line">console.log(Function.prototype instanceof Object)//<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<h4 id="4-2-所有函数都是Funtion的实例-包括它本身"><a href="#4-2-所有函数都是Funtion的实例-包括它本身" class="headerlink" title="4.2 所有函数都是Funtion的实例,包括它本身"></a>4.2 所有函数都是Funtion的实例,包括它本身</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Function.__proto__ === Function.prototype)//<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<h4 id="4-3-Object的原型对象是原型链的尽头"><a href="#4-3-Object的原型对象是原型链的尽头" class="headerlink" title="4.3 Object的原型对象是原型链的尽头"></a>4.3 Object的原型对象是原型链的尽头</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object.prototype.__proto__)//null</span><br></pre></td></tr></table></figure>
-<h2 id="5-原型链查找对象属性"><a href="#5-原型链查找对象属性" class="headerlink" title="5    原型链查找对象属性"></a>5    原型链查找对象属性</h2><h4 id="5-1-如何查找"><a href="#5-1-如何查找" class="headerlink" title="5.1 如何查找"></a>5.1 如何查找</h4><pre><code>1、读取对象属性值时,会自动到原型链中查找
-2、设置对象的属性值时,不查找原型链,如果当前对象中没有此属,直接添加此属性并设置其值
-3、方法一般定义在原型中,属性一般打通过构造函数定义在对象本身上
-</code></pre><h4 id="5-2-代码举例"><a href="#5-2-代码举例" class="headerlink" title="5.2 代码举例"></a>5.2 代码举例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">F2</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">F2.prototype.a = <span class="string">"aaa"</span></span><br><span class="line">var f2 = new F2()</span><br><span class="line">console.log(f2)</span><br><span class="line"></span><br><span class="line">var f3 = new F2()</span><br><span class="line">console.log(f3.a)//aaa</span><br><span class="line">f3.a = <span class="string">"bbb"</span> //设置不会进入原型链</span><br><span class="line">console.log(f2.a)//aaa</span><br><span class="line">console.log(f3.a)//bbb</span><br><span class="line">console.log(f2)</span><br><span class="line">console.log(f3)</span><br></pre></td></tr></table></figure>
-<h2 id="6-关于instanceof"><a href="#6-关于instanceof" class="headerlink" title="6 关于instanceof"></a>6 关于instanceof</h2><pre><code>1、instanceof判定原理
-    *表达式 A instanceof B
-    *如果B函数的显示原型对象在A对象的原型链上,返回true,否则返回false
-2、Function是通过new自己产生的实例
-</code></pre><h2 id="7-判断下列输出"><a href="#7-判断下列输出" class="headerlink" title="7 判断下列输出"></a>7 判断下列输出</h2><h4 id="例1"><a href="#例1" class="headerlink" title="例1"></a>例1</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Foo</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">var foo = new Foo()</span><br><span class="line">console.log(foo instanceof Foo)//<span class="literal">true</span></span><br><span class="line">console.log(foo instanceof Object)//<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<h4 id="例2"><a href="#例2" class="headerlink" title="例2"></a>例2</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object instanceof Function)//<span class="literal">true</span></span><br><span class="line">console.log(Object instanceof Object)//<span class="literal">true</span></span><br><span class="line">console.log(Function instanceof Function)//<span class="literal">true</span></span><br><span class="line">console.log(Function instanceof Object)//<span class="literal">true</span></span><br><span class="line">console.log(Object instanceof Foo)//<span class="literal">false</span></span><br></pre></td></tr></table></figure>
-<h4 id="例3"><a href="#例3" class="headerlink" title="例3"></a>例3</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">FF</span></span>() &#123;&#125;</span><br><span class="line">Object.prototype.a = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	console.log(<span class="string">"aaaaaaaaa"</span>)</span><br><span class="line">&#125;</span><br><span class="line">Function.prototype.b = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	console.log(<span class="string">"bbbbbbbbb"</span>)</span><br><span class="line">&#125;</span><br><span class="line">var ff = new FF()</span><br><span class="line">f.a()//aaaaaaaaa</span><br><span class="line">f.b()//err</span><br><span class="line">F.a()//aaaaaaaaa</span><br><span class="line">F.b()// bbbbbbbbb</span><br></pre></td></tr></table></figure>
-<h2 id="画个funtion-Fun-的原型关系图"><a href="#画个funtion-Fun-的原型关系图" class="headerlink" title="画个funtion Fun() {} 的原型关系图"></a>画个funtion Fun() {} 的原型关系图</h2><p><img src="/2019/04/03/js-prototype/2.png" alt="avatar"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/03/js-prototype/" data-id="cjxodhbe50009i47k5qfu2paw" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-js-function" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/03/js-function/" class="article-date">
-  <time datetime="2019-04-03T01:36:00.000Z" itemprop="datePublished">2019-04-03</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/03/js-function/">函数</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">	1、this是什么？</span><br><span class="line">	  *任何函数本质上都是通过某个对象来调用的,如果没有直接指定就是window</span><br><span class="line">	  *所有函数内部都有一个变量this</span><br><span class="line">	  *它的值是调用函数的当前对象</span><br><span class="line">	2、如何确定this的值?</span><br><span class="line">	  *<span class="built_in">test</span>():window</span><br><span class="line">	  *p.test():p</span><br><span class="line">	  *new <span class="built_in">test</span>():新创建的对象</span><br><span class="line">	  *p.call(obj):obj</span><br><span class="line">*/</span><br><span class="line"><span class="keyword">function</span> Person(color) &#123;</span><br><span class="line">	console.log(this);</span><br><span class="line">	this.color = color;</span><br><span class="line">	this.getColor = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">		<span class="built_in">return</span> this.color</span><br><span class="line">	&#125;</span><br><span class="line">	this.setColor = <span class="keyword">function</span>(color) &#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">		this.color = color;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person(<span class="string">"red"</span>);   //this?   window</span><br><span class="line"></span><br><span class="line">var p = new Person(<span class="string">"yellow"</span>);     //this?  Person</span><br><span class="line"></span><br><span class="line">var obj = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">p.setColor.call(obj,<span class="string">"black"</span>);     //this?    obj</span><br><span class="line"></span><br><span class="line">var <span class="built_in">test</span> = p.setColor;</span><br><span class="line"><span class="built_in">test</span>();    //this?      window</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fun1</span></span>() &#123;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">fun2</span></span>() &#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;</span><br><span class="line">	fun2(); //this?     window</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun1();</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/03/js-function/" data-id="cjxodhbe8000bi47kv3rn1ym8" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-js-context" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/02/js-context/" class="article-date">
-  <time datetime="2019-04-02T02:47:56.000Z" itemprop="datePublished">2019-04-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/02/js-context/">变量提升、执行上下文、作用域</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一、变量提升与函数提升"><a href="#一、变量提升与函数提升" class="headerlink" title="一、变量提升与函数提升"></a>一、变量提升与函数提升</h2><h3 id="1、变量声明提升"><a href="#1、变量声明提升" class="headerlink" title="1、变量声明提升"></a>1、变量声明提升</h3><pre><code>通过var声明的变量,在定义语句之前就可以访问到
-值为undefined
-</code></pre><h3 id="2、函数声明提升"><a href="#2、函数声明提升" class="headerlink" title="2、函数声明提升"></a>2、函数声明提升</h3><pre><code>通过function声明的函数,在之前就可以直接调用
-值为函数定义(对象)
-</code></pre><h3 id="3、问题-变量提升和函数提升是如何产生的"><a href="#3、问题-变量提升和函数提升是如何产生的" class="headerlink" title="3、问题:变量提升和函数提升是如何产生的?"></a>3、问题:变量提升和函数提升是如何产生的?</h3><pre><code>执行上下文的预处理(下文介绍)
-</code></pre><h2 id="二、执行上下文"><a href="#二、执行上下文" class="headerlink" title="二、执行上下文"></a>二、执行上下文</h2><h3 id="1、将代码分类可分为"><a href="#1、将代码分类可分为" class="headerlink" title="1、将代码分类可分为"></a>1、将代码分类可分为</h3><pre><code>全局代码
-函数代码
-</code></pre><h3 id="2、全局执行上下文"><a href="#2、全局执行上下文" class="headerlink" title="2、全局执行上下文"></a>2、全局执行上下文</h3><pre><code>在执行全局代码前将window确定为全局执行上下文
-对全局数据进行预处理
-    用var定义的全局变量===&gt;undefined,添加为window的属性
-    function声明的全局函数===&gt;赋值,添加为window的方法
-    this===&gt;赋值为window
-开始执行全局代码
-</code></pre><h3 id="3、函数执行上下文"><a href="#3、函数执行上下文" class="headerlink" title="3、函数执行上下文"></a>3、函数执行上下文</h3><pre><code>在调用函数,准备执行函数体之前,创建对应函数的执行上下文对象
-对局部数据进行预处理
-    形参变量赋值实参==&gt;添加为执行上下文的属性
-    arguments===&gt;赋值(实参列表),添加为执行上下文的属性
-    var定义的局部变量---&gt;undefined,添加为执行上下文的属性
-    function声明的全局函数===&gt;赋值,添加为执行上下文的方法
-    this===&gt;赋值(调用函数的对象)
-</code></pre><h2 id="三、作用域和作用域链"><a href="#三、作用域和作用域链" class="headerlink" title="三、作用域和作用域链"></a>三、作用域和作用域链</h2><h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><pre><code>1、解释
-    *一段代码块所在的区域
-    *编写代码时就确定了,是静态的
-2、分类
-    *全局作用域
-    *函数作用域
-    *块作用域(es6)
-3、作用:隔离变量,不同作用域下的同名变量不冲突
-</code></pre><h3 id="作用域与执行上下文"><a href="#作用域与执行上下文" class="headerlink" title="作用域与执行上下文"></a>作用域与执行上下文</h3><pre><code>1、区别
-    1.1
-    *全局作用域之外,每个函数都会创建自己的作用域,作用域在函数定义时就已经确定了,而不是在函数调用时
-    *全局执行上下文环境实在全局作用域确定之后,js代码执行之前创建
-    *函数执行上下文是在调用函数时,函数体代码执行前创建的
-    1.2
-    *作用域是静态的,函数定义好就一直存在,不会变化
-    *执行上下文是动态的,调用函数时创建,函数调用结束自动释放
-2、联系
-    *执行上下文环境从属于所在的作用域
-    *全局上下文环境===&gt;全局作用域
-    *函数上下文环境===&gt;对应的函数使用域
-</code></pre><h3 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h3><pre><code>1、解释
-    *多个上下级关系作用域形成的链,它的方向是从下向上(从内到外)的
-    *查找变量沿着作用域链查找
-2、查找规则
-    *当前作用域的执行上下文查找,找到返回,否则进入下一步
-    *在上一级作用域中的执行上下文查找,找到返回,否则进入下一步
-    *再次进行上一步的查找操作,直到全局作用域,未找到则抛出异常
-</code></pre><h3 id="通过例子说明问题"><a href="#通过例子说明问题" class="headerlink" title="通过例子说明问题"></a>通过例子说明问题</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">console.log(a1)</span><br><span class="line">console.log(a2())</span><br><span class="line">console.log(this)   //Q:在哪找到?=&gt;A:全局执行上下文window</span><br><span class="line">var a1 = 3;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">a2</span></span>() &#123;</span><br><span class="line">	<span class="built_in">return</span> <span class="string">"执行了a2"</span></span><br><span class="line">&#125;</span><br><span class="line">//函数执行上下文   Q:什么时候创建内存空间存放上下文的局部变量？A:调用时</span><br><span class="line"><span class="keyword">function</span> fn(a1) &#123;</span><br><span class="line">	console.log(a1)  //测试输出 100</span><br><span class="line">	console.log(a2)  //测试输出 undefined</span><br><span class="line">	a3()             //测试输出	a3</span><br><span class="line">	console.log(this)//测试输出	window</span><br><span class="line">	console.log(arguments)//测试输出 伪数组[]</span><br><span class="line">	var a2 = 3;</span><br><span class="line">	<span class="keyword">function</span> <span class="function"><span class="title">a3</span></span>() &#123;</span><br><span class="line">		console.log(<span class="string">"a3"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn(100,200)</span><br></pre></td></tr></table></figure>
-<h2 id="执行上下文的栈"><a href="#执行上下文的栈" class="headerlink" title="执行上下文的栈"></a>执行上下文的栈</h2><h3 id="Q-分析下列代码"><a href="#Q-分析下列代码" class="headerlink" title="Q:分析下列代码"></a>Q:分析下列代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var a = 10;</span><br><span class="line">var bar = <span class="keyword">function</span>(x) &#123;</span><br><span class="line">	var b = 5;</span><br><span class="line">	foo(x+b);     </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var foo = <span class="keyword">function</span>(y) &#123;</span><br><span class="line">	var c = 5;</span><br><span class="line">	console.log(a+c+y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bar(10);//共产生几个执行上下文对象?  3个  window  bar()  foo() </span><br><span class="line">bar(10);//若再调用一次则答案为5个  window  bar()  foo()  bar()  foo()</span><br></pre></td></tr></table></figure>
-<h3 id="A-分析"><a href="#A-分析" class="headerlink" title="A:分析"></a>A:分析</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//在全局代码执行前,js引擎会创建一个栈来存储管理所有的执行上下文对象</span><br><span class="line">var a = 10;//进入全局上下文   栈内[window]</span><br><span class="line">var bar = <span class="keyword">function</span>(x) &#123;</span><br><span class="line">	var b = 5;</span><br><span class="line">	foo(x+b);     //进入foo的执行上下文</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var foo = <span class="keyword">function</span>(y) &#123;</span><br><span class="line">	var c = 5;</span><br><span class="line">	console.log(a+c+y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bar(10);//进入bar函数执行上下文  </span><br><span class="line">//栈内情况</span><br><span class="line">//[window]</span><br><span class="line">//[window bar]</span><br><span class="line">//[window bar foo]</span><br><span class="line">//[window bar]</span><br><span class="line">//[window]</span><br></pre></td></tr></table></figure>
-<h2 id="相关例题"><a href="#相关例题" class="headerlink" title="相关例题"></a>相关例题</h2><h3 id="例1-下列代码输出-整个过程产生了几个执行上下文"><a href="#例1-下列代码输出-整个过程产生了几个执行上下文" class="headerlink" title="例1:下列代码输出?整个过程产生了几个执行上下文"></a>例1:下列代码输出?整个过程产生了几个执行上下文</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">console.log(<span class="string">"a"</span>+i)</span><br><span class="line">var i = 1;</span><br><span class="line">foo(1);</span><br><span class="line"><span class="keyword">function</span> foo(i)&#123;</span><br><span class="line">	<span class="keyword">if</span>(i==4)&#123;</span><br><span class="line">		<span class="built_in">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	console.log(<span class="string">"fs"</span>+i);</span><br><span class="line">	foo(i+1);</span><br><span class="line">	console.log(<span class="string">"fe"</span>+i)</span><br><span class="line">&#125;</span><br><span class="line">console.log(<span class="string">"b"</span>+i)</span><br><span class="line">//输出:aundefined fs1 fs2 fs3 fe3 fe2 fe1 b1</span><br><span class="line">//栈内情况</span><br><span class="line">//[window]</span><br><span class="line">//[window foo(1)] </span><br><span class="line">//[window foo(1) foo(2)] </span><br><span class="line">//[window foo(1) foo(2) foo(3)] </span><br><span class="line">//[window foo(1) foo(2) foo(3) foo(4)] </span><br><span class="line">//[window foo(1) foo(2) foo(3)] </span><br><span class="line">//[window foo(1) foo(2)] </span><br><span class="line">//[window foo(1)] </span><br><span class="line">//[window]</span><br></pre></td></tr></table></figure>
-<h3 id="例2-1-判断输出"><a href="#例2-1-判断输出" class="headerlink" title="例2.1:判断输出"></a>例2.1:判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">a</span></span>() &#123;&#125;</span><br><span class="line">var a</span><br><span class="line">console.log(typeof a)//? <span class="keyword">function</span></span><br></pre></td></tr></table></figure>
-<h3 id="例2-2-判断输出"><a href="#例2-2-判断输出" class="headerlink" title="例2.2:判断输出"></a>例2.2:判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">a</span></span>() &#123;&#125;</span><br><span class="line">var a = 1</span><br><span class="line">console.log(typeof a)//? number  </span><br><span class="line">//函数提升要比变量提升的优先级要高一些，且不会被变量声明覆盖，但是会被变量赋值之后覆盖</span><br></pre></td></tr></table></figure>
-<h3 id="例3-判断输出"><a href="#例3-判断输出" class="headerlink" title="例3:判断输出"></a>例3:判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!b <span class="keyword">in</span> window)&#123;</span><br><span class="line">	var b = 1;</span><br><span class="line">&#125;</span><br><span class="line">console.log(b)//?undefined</span><br></pre></td></tr></table></figure>
-<h3 id="例4-判断输出"><a href="#例4-判断输出" class="headerlink" title="例4:判断输出"></a>例4:判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var c = 1</span><br><span class="line"><span class="keyword">function</span> c(c)&#123;</span><br><span class="line">	console.log(c)</span><br><span class="line">&#125;</span><br><span class="line">c(2019)//?  报错 <span class="string">'c'</span> is not a <span class="keyword">function</span></span><br></pre></td></tr></table></figure>
-<h3 id="例5：判断输出"><a href="#例5：判断输出" class="headerlink" title="例5：判断输出"></a>例5：判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">var x = 10;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>() &#123;</span><br><span class="line">	console.log(x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> show(f) &#123;</span><br><span class="line">	var x = 20;</span><br><span class="line">	f();</span><br><span class="line">&#125;</span><br><span class="line">show(fn)//? 10  查找变量fn中无x 外层找:x=10</span><br><span class="line"></span><br><span class="line">//输出是什么？</span><br><span class="line">var fn = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">	console.log(fn)</span><br><span class="line">&#125;</span><br><span class="line">fn()//<span class="function"><span class="title">funcion</span></span>() &#123;...&#125; 内部找没有 外层找全局内有 输出</span><br></pre></td></tr></table></figure>
-<h3 id="例6：判断输出"><a href="#例6：判断输出" class="headerlink" title="例6：判断输出"></a>例6：判断输出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">	fn2:<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(fn2)//报错</span><br><span class="line">		console.log(this.fn2)//<span class="function"><span class="title">function</span></span>() &#123;...&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.fn2()</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/02/js-context/" data-id="cjxodhbe10006i47kaczcwud0" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-js-datatype" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/02/js-datatype/" class="article-date">
-  <time datetime="2019-04-02T02:23:09.000Z" itemprop="datePublished">2019-04-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/02/js-datatype/">数据类型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="1、数据类型"><a href="#1、数据类型" class="headerlink" title="1、数据类型"></a>1、数据类型</h3><h4 id="基本类型-值类型"><a href="#基本类型-值类型" class="headerlink" title="基本类型(值类型)"></a>基本类型(值类型)</h4><pre><code>String：任意字符串
-Number：任意的数字
-Boolean：true/false
-undefined：undefined
-null：null
-</code></pre><h4 id="对象类型-引用类型"><a href="#对象类型-引用类型" class="headerlink" title="对象类型(引用类型)"></a>对象类型(引用类型)</h4><pre><code>Object：任意对象
-Function：一种特别的对象(可以执行)
-Array：一种可别的对象(通过下标访问，内部数据有序)
-</code></pre><h3 id="2、判断"><a href="#2、判断" class="headerlink" title="2、判断"></a>2、判断</h3><pre><code>*typeof：可以判断undefined/number/string/boolean/function!
-         不可以判断null与object  object与array
-*instanceof：判断对象的具体类型
-===
-</code></pre><h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>1、基本数据类型(值类型)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//typeof返回数据类型的字符串表达！！</span><br><span class="line">var a</span><br><span class="line">console.log(a) //undefind</span><br><span class="line">console.log(a,typeof a === <span class="string">'undefined'</span>,a===undefined)//undefined <span class="literal">true</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">"abc"</span></span><br><span class="line">console.log(typeof a,typeof a === <span class="string">'string'</span>)  //<span class="string">'string'</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">a = 123</span><br><span class="line">console.log(typeof a,typeof a === <span class="string">'number'</span>)  //<span class="string">'number'</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">a = <span class="literal">true</span> </span><br><span class="line">console.log(typeof a,typeof a === <span class="string">'boolean'</span>) //<span class="string">'boolean'</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">//*注意null</span><br><span class="line">a = null </span><br><span class="line">console.log(typeof a)  //<span class="string">'object'</span></span><br><span class="line">console.log(a === null) //<span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
-<p>2、对象数据类型(引用类型)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// a instance of 即 a是否为构造函数b的实例？返回<span class="literal">true</span>和<span class="literal">false</span></span><br><span class="line">var b1 = &#123;</span><br><span class="line">	b2:[1,<span class="string">'abc'</span>,console.log],</span><br><span class="line">	b3:<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">		console.log(<span class="string">'b3'</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(b1 instanceof Object) //<span class="literal">true</span></span><br><span class="line">console.log(b1 instanceof Array) //<span class="literal">false</span></span><br><span class="line">console.log(b1.b2 instanceof Array,b1.b2 instanceof Object) //<span class="literal">true</span> <span class="literal">true</span></span><br><span class="line">console.log(b1.b3 instanceof Array,b1.b3 instanceof Object) //<span class="literal">false</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><pre><code>1、Q：undefined和null的区别是什么？
-   A：undefined是定义后未赋值 null是定义后赋值为null
-
-2、Q：什么时候给变量赋值为null?
-   A：初始化赋值，表明将要赋值为对象；结束前让对象成为垃圾对象(呗垃圾回收机制回收)
-
-3、Q：严格区别变量类型和数据类型？
-   A：数据的类型分为基本类型和对象类型
-         变量的类型分为基本类型(保存的就是基本类型的数据)/引用类型(保存的是地址值)
-</code></pre><h3 id="写个函数判断数据类型"><a href="#写个函数判断数据类型" class="headerlink" title="写个函数判断数据类型"></a>写个函数判断数据类型</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> getType(data) &#123;</span><br><span class="line">	<span class="keyword">if</span>(data === null)&#123;</span><br><span class="line">		console.log(null)</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span>(typeof data!=<span class="string">"object"</span>)&#123;</span><br><span class="line">		console.log(typeof data)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(data instanceof Array)&#123;</span><br><span class="line">			console.log(<span class="string">"array"</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(data instanceof Function)&#123;</span><br><span class="line">			console.log(<span class="string">"function"</span>)</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			console.log(<span class="string">"object"</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/02/js-datatype/" data-id="cjxodhbe30008i47khgyhm9gb" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-sort" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/31/sort/" class="article-date">
-  <time datetime="2019-03-31T14:16:08.000Z" itemprop="datePublished">2019-03-31</time>
+    <a href="/2019/05/31/algorithm-combineArray/" class="article-date">
+  <time datetime="2019-05-31T13:21:42.000Z" itemprop="datePublished">2019-05-31</time>
 </a>
     
   <div class="article-category">
@@ -483,7 +597,7 @@ Array：一种可别的对象(通过下标访问，内部数据有序)
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/31/sort/">排序算法</a>
+      <a class="article-title" href="/2019/05/31/algorithm-combineArray/">组合数组元素</a>
     </h1>
   
 
@@ -491,221 +605,13 @@ Array：一种可别的对象(通过下标访问，内部数据有序)
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="冒泡排序-bubbleSort"><a href="#冒泡排序-bubbleSort" class="headerlink" title="冒泡排序(bubbleSort)"></a>冒泡排序(bubbleSort)</h2><pre><code class="bash">bubbleSort:<span class="keyword">function</span>
-args:arr  目标排序数组
-每一趟排序从左到右进行,相邻两个数比较后者大于前者进行交换
-每一趟排序得到一个最大的数
-
-例:排序[4,3,5,6,1,2]
-第一趟   3 4 5 6 1 2    比较4和3 4&gt;3 交换
-        3 4 5 6 1 2    比较4和5 4&lt;5 不交换
-        3 4 5 6 1 2    比较5和6 5&lt;6 不交换
-        3 4 5 1 6 2    比较6和1 6&gt;1 交换
-        3 4 5 1 2 6    比较6和2 6&gt;2 交换   
-        此时第一趟结束 最大值6到达数组末尾
-第二趟   3 4 5 1 2 6    比较3和4 3&lt;4 不交换 
-        3 4 5 1 2 6    比较4和5 4&lt;5 不交换
-        3 4 1 5 2 6    比较5和1 5&gt;1 交换
-        3 4 1 2 5 6    比较5和2 5&gt;2 交换
-        此时第二趟结束 第二大值5到达数组倒数第二位置
-        ...
-        ...
-        ...
-</code></pre>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="bash"><span class="keyword">function</span> bubbleSort(arr){
-    <span class="built_in">let</span> len = arr.length;
-    <span class="keyword">for</span>(<span class="built_in">let</span> i=0;i&lt;len-1;i++){             //第一层的i仅作为控制当前数据长度的变量 在第二层中使用len-i减少长度
-        <span class="keyword">for</span>(<span class="built_in">let</span> j=0;j&lt;len-i-1;j++){
-            <span class="keyword">if</span>(arr[j]&gt;arr[j+1]){
-                <span class="built_in">let</span> temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-            }
-        }
-    }
-}
-</code></pre>
-<hr>
-<h2 id="快速排序-quickSort"><a href="#快速排序-quickSort" class="headerlink" title="快速排序(quickSort)"></a>快速排序(quickSort)</h2><pre><code class="bash">quickSort:<span class="keyword">function</span> 
-args:[arr,l,r]  对数组arr的下标l-r范围的数据进行一次排序处理
-
-思路:双指针递归 设指针i从做向右扫描,j从右向左扫描
-
-例:排序[6,3,8,5,2,4,7,1]
-
-6 3 8 5 4 2 7 1
-i             j
-
-首先选择一个基准 选择目标范围的第一个数作为基准 排序结束后基准左侧的所有数都小于等于基准,基准右侧的所有数都大于等于基准
-这里基准arr[i]=6 令x=arr[i]
-
-第一趟:j从右向左扫描 找比x小的值 此时arr[j]&lt;x  (1&lt;6)  进行赋值操作arr[i]=arr[j]
-1 3 8 5 4 2 7 1
-i             j
-
-第二趟:i从左向右扫描,找比x大的值 
-1 3 8 5 3 2 7 1
-  i           j    3&lt;6 继续向右扫描
-    i         j    8&gt;6 进行复制操作arr[j]=arr[i]
-
-1 3 8 5 3 2 7 8
-    i         j
-
-第三趟:j从右向左扫描,找比x小的值
-1 3 8 5 3 2 7 8
-    i       j     7&gt;6 继续向左扫描
-    i     j       2&lt;6 进行赋值操作arr[i]=arr[j]
-
-1 3 2 5 3 2 7 8
-    i     j
-
-第四趟:i从左向右扫描,找比x大的值
-1 3 2 5 3 2 7 8
-    i     j
-      i   j      5&lt;6 继续向右扫描
-        i j      3&lt;6 继续向右扫描
-          i      ij重合 扫描结束 进行复制操作arr[i]=x
-
-此时的数组为
-1 3 2 5 3 6 7 8
-可以发现6左侧的数字都小于6 右侧的数字都大于6 
-对两侧进行递归 即可完成快速排序,递归退出的条件 目标数组长度&lt;=1
-</code></pre>
-<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="bash"><span class="keyword">function</span> quickSort(arr,l,r){
-    <span class="built_in">let</span> i,j,x;
-    <span class="keyword">if</span>(l&gt;=r){
-        <span class="built_in">return</span>; 
-    }
-    i=l;
-    j=r;
-    x=arr[i]
-    <span class="keyword">while</span>(i&lt;j){
-        <span class="keyword">while</span>(arr[j]&gt;x&amp;&amp;i&lt;j){
-            j--;
-        }
-        <span class="keyword">if</span>(i&lt;j){
-            arr[i]=arr[j];
-        }
-        <span class="keyword">while</span>(arr[i]&lt;x&amp;&amp;i&lt;j){
-            i++;
-        }
-        <span class="keyword">if</span>(i&lt;j){
-            arr[j]=arr[i];
-        }
-    }
-    arr[i]=x;
-    quickSort(arr,l,i-1);
-    quickSort(arr,i+1,r);
-}
-</code></pre>
-<hr>
-<h2 id="堆排序-HeapSort"><a href="#堆排序-HeapSort" class="headerlink" title="堆排序(HeapSort)"></a>堆排序(HeapSort)</h2><p>实现过程:将要排序的数组写成完全二叉树形式<br>例如:将[2,1,4,3,5]进行堆排序</p>
-<pre><code class="bash">    2   [0]
-   / \
-  1   4    [1]   [2]
- / \
-3   5        [3]     [4]
-</code></pre>
-<p>从左到右 从上到下 进行索引标记<br>对每个父结点进行heapify操作,使得以该父结点为根的子树构成大根堆</p>
-<h3 id="heapify"><a href="#heapify" class="headerlink" title="heapify"></a>heapify</h3><p>从父结点开始,值与左右子结点比较,将最大子结点和父结点交换,若父结点&gt;左右子结点则不交换<br>如果发生了交换,对发生交换的子结点作为新的父结点再次进行heapify操作直到叶子结点<br>例1  对1进行heapify</p>
-<pre><code class="bash">  1     heapify     5
- / \    ======&gt;    / \    (1和5进行了交换,此时的1作为父结点已经是叶子结点,不再继续heapify)    
-3   5             3   1
-</code></pre>
-<p>例2  对2进行heapify</p>
-<pre><code class="bash">    2                         4
-   / \      heapify          / \
-  1   4     ======&gt;         1   2   (2和4进行了交换,此时的2作为父结点已经是叶子结点,不再继续heapify)  
- / \                       / \
-3   5                     3   5
-</code></pre>
-<p>例3  对2进行heapify</p>
-<pre><code class="bash">    2                         4                          4
-   / \      heapify          / \        heapify         / \
-  4   1     ======&gt;         2   1       ======&gt;        5   1   (2和4进行了交换,此时的2作为父结点不是叶子结点,继续对其heapify)
- / \                       / \                        / \
-3   5                     3   5                      3   2
-</code></pre>
-<h3 id="建堆"><a href="#建堆" class="headerlink" title="建堆"></a>建堆</h3><p>从后往前找第一个非叶父结点对其进行heapify操作,此操作向前一直进行,直到根结点,建堆操作结束后完全二叉树成为大根堆<br>所有的父结点都大于等于其左右子结点</p>
-<h3 id="堆排序步骤"><a href="#堆排序步骤" class="headerlink" title="堆排序步骤:"></a>堆排序步骤:</h3><p>建堆、将根结点与最后一个结点交换,切断最后一个结点(数组的长度减1),这个结点为最大值,对剩余结点的根结点进行heapify操作,直到根只剩余结点</p>
-<h3 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="bash">/*
-    堆排序(heapSort)
-    swap:<span class="keyword">function</span>
-    args:arr,i,j  交换数组arr下标i和j数据
-
-    heapify:<span class="keyword">function</span>
-    args:arr,n,i  对长度为n的数组arr的第i个结点进行操作,使arr[i]的左右子结点均不大于arr[i],此操作递归向下进行直叶子结点
-
-    buildHeap:<span class="keyword">function</span>
-    args:arr,n    对长度为n的数组arr进行建堆操作,使所有父结点&gt;=对应的子结点
-
-    heapSort:<span class="keyword">function</span>
-    args:arr,n    对长度为n的数组arr进行堆排序
-
-    例:排序[3,4,2,5,1]
-        3          [0]            结点关系:父结点为i,左子结点:2i+1,右子结点:2i+2
-       / \         / \            倒推:完全二叉树共有n个结点,则最后有一个结点index=n-1
-      4   2      [1] [2]               最后一个lastParentNode = (index-1)/2
-     / \         / \
-    5   1      [3] [4]
-
-
-    计算lastPNodes=Math.floor((5-1-1)/2)=1
-    从arr[1]开始往前进行heapify操作 完成建堆
-    对堆进行操作交换第一个结点和最后一个结点 交换一次长度减一 对剩余数据继续进行heapify,再交换......直到剩余数据只剩一个
-    完成排序 
-*/
-
-<span class="keyword">function</span> swap(arr,i,j) {
-    <span class="built_in">let</span> temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-}
-
-<span class="keyword">function</span> heapify(arr,n,i) {
-    <span class="keyword">if</span>(i&gt;=n){
-        <span class="built_in">return</span>; 
-    }
-    <span class="built_in">let</span> max = i;
-    <span class="built_in">let</span> c1 = 2*i+1;
-    <span class="built_in">let</span> c2 = 2*i+2;
-    <span class="keyword">if</span>(arr[c1]&gt;arr[max]&amp;&amp;c1&lt;n){
-        max = c1;
-    }
-    <span class="keyword">if</span>(arr[c2]&gt;arr[max]&amp;&amp;c2&lt;n){
-        max = c2;
-    }
-    <span class="keyword">if</span>(max!=i){
-        swap(arr,i,max);
-        heapify(arr,n,max);
-    }
-}
-
-<span class="keyword">function</span> buildHeap(arr,n) {
-    <span class="built_in">let</span> lastNodeIndex = n-1;
-    <span class="built_in">let</span> lastParentNode = Math.floor((lastNodeIndex-1)/2)
-    <span class="keyword">for</span>(<span class="built_in">let</span> i = lastParentNode;i&gt;=0;i--){
-        heapify(arr,n,i)
-    }
-}
-
-<span class="keyword">function</span> heapSort(arr,n) {
-    buildHeap(arr,n);
-    <span class="keyword">for</span>(<span class="built_in">let</span> i=n-1;i&gt;=0;i--){
-        swap(arr,0,i);
-        heapify(arr,i,0);
-    }
-}
-//测试
-<span class="built_in">let</span> arr = [3,4,2,5,1];
-heapSort(arr,5)
-console.log(arr)//1,2,3,4,5
-</code></pre>
-
+        <p>组合数组元素<br>给定二维数组 从每一项抽取一个组合成为字符串 求所有字符串的组合<br>例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入 [[&apos;Allen&apos;,&apos;Tommy&apos;],[&apos;Like&apos;],[&apos;Apple&apos;,&apos;Banana&apos;]]</span><br><span class="line">输出 [&apos;AllenLikeApple&apos;,&apos;AllenLikeBanana&apos;,&apos;TommyLikeApple&apos;,&apos;TommyLikeBanana&apos;]</span><br></pre></td></tr></table></figure></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>将每一个结果保存在变量str中 从第一个数组元素出发 向后扫描下一个数组 递归到长度为二维数组的长度 把结果存入结果数组res中</p>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> s(i,str,arr,res) &#123;</span><br><span class="line">	<span class="keyword">if</span>(i==arr.length)&#123;</span><br><span class="line">		res.push(str)</span><br><span class="line">		<span class="built_in">return</span> </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> j <span class="keyword">in</span> arr[i]) &#123;</span><br><span class="line">		<span class="built_in">let</span> current = str</span><br><span class="line">		current+=arr[i][j]</span><br><span class="line">		s(i+1,current,arr,res)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> combineArrayElement(arr)&#123;</span><br><span class="line">	<span class="built_in">let</span> res = []</span><br><span class="line">	<span class="keyword">if</span>(!arr.length)&#123;</span><br><span class="line">		<span class="built_in">return</span> -1</span><br><span class="line">	&#125;</span><br><span class="line">	arr[0].forEach((value,index)=&gt;&#123;</span><br><span class="line">		s(1,value,arr,res)</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="built_in">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/31/sort/" data-id="cjxodhbeb000di47kuacuvq7z" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/31/algorithm-combineArray/" data-id="cjy6z9bos0002u87kjqx2989c" class="article-share-link">Share</a>
       
       
     </footer>
@@ -715,12 +621,16 @@ console.log(arr)//1,2,3,4,5
 
 
   
-    <article id="post-vue-cors" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-algorithm-swingSubString" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/03/28/vue-cors/" class="article-date">
-  <time datetime="2019-03-28T08:16:27.569Z" itemprop="datePublished">2019-03-28</time>
+    <a href="/2019/05/22/algorithm-swingSubString/" class="article-date">
+  <time datetime="2019-05-22T07:50:52.000Z" itemprop="datePublished">2019-05-22</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -729,7 +639,7 @@ console.log(arr)//1,2,3,4,5
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/28/vue-cors/">VUE项目axios发送请求CORS跨域问题解决方案</a>
+      <a class="article-title" href="/2019/05/22/algorithm-swingSubString/">最长摇摆子序列</a>
     </h1>
   
 
@@ -737,102 +647,13 @@ console.log(arr)//1,2,3,4,5
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://blog.csdn.net/yuanlaijike/article/details/80522621" target="_blank" rel="noopener">参考博客</a></p>
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>vue项目中使用axios向后端获取数据 接口地址<a href="http://xxxxxx-api.xxxxxx.com/v1/api/processes" target="_blank" rel="noopener">http://xxxxxx-api.xxxxxx.com/v1/api/processes</a></p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="main-js"><a href="#main-js" class="headerlink" title="main.js"></a>main.js</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import Vue from <span class="string">'vue'</span></span><br><span class="line">import App from <span class="string">'./App'</span></span><br><span class="line">import Axios from <span class="string">'axios'</span></span><br><span class="line"></span><br><span class="line">Vue.prototype.<span class="variable">$axios</span> = Axios</span><br><span class="line">Axios.defaults.baseURL = <span class="string">'/api'</span></span><br><span class="line">Axios.defaults.headers.post[<span class="string">'Content-Type'</span>] = <span class="string">'application/json'</span>;</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">/* eslint-disable no-new */</span><br><span class="line">new Vue(&#123;</span><br><span class="line">  el: <span class="string">'#app'</span>,</span><br><span class="line">  components: &#123; App &#125;,</span><br><span class="line">  template: <span class="string">'&lt;App/&gt;'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>关键代码是：Axios.defaults.baseURL = ‘/api’，这样每次发送请求都会带一个/api的前缀</p>
-<h3 id="config-index-js"><a href="#config-index-js" class="headerlink" title="config/index.js"></a>config/index.js</h3><p>修改config文件夹下的index.js文件，在proxyTable中加上如下代码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">proxyTable: &#123;</span><br><span class="line">     <span class="string">'/api'</span>:&#123;</span><br><span class="line">        target: <span class="string">"http://xxxxxx-api.xxxxxx.com/v1/api"</span>,</span><br><span class="line">        changeOrigin:<span class="literal">true</span>,</span><br><span class="line">        pathRewrite:&#123;</span><br><span class="line">            <span class="string">'^/api'</span>:<span class="string">''</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="修改请求"><a href="#修改请求" class="headerlink" title="修改请求"></a>修改请求</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">getProcessList</span></span>() &#123;</span><br><span class="line">  this.<span class="variable">$axios</span>.get(<span class="string">"/processes"</span>).<span class="keyword">then</span>(res=&gt;&#123;</span><br><span class="line">    console.log(res)</span><br><span class="line">    <span class="built_in">let</span> data = res.data.data</span><br><span class="line">    <span class="built_in">let</span> checkList = []</span><br><span class="line">    data.forEach((item,index)=&gt;&#123;</span><br><span class="line">      <span class="built_in">let</span> processessItem = &#123;&#125;</span><br><span class="line">      processessItem.index = item.id</span><br><span class="line">      processessItem.value = `(<span class="variable">$&#123;item.id&#125;</span>) <span class="variable">$&#123;item.name&#125;</span>`</span><br><span class="line">      checkList.push(processessItem)</span><br><span class="line">    &#125;)</span><br><span class="line">    // console.log(checkList)</span><br><span class="line">    this.checkList = checkList</span><br><span class="line">  &#125;).catch(err=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">"error"</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="重启服务"><a href="#重启服务" class="headerlink" title="重启服务"></a>重启服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
-<h3 id="原理总结"><a href="#原理总结" class="headerlink" title="原理总结"></a>原理总结</h3><p>因为我们给url加上了前缀/api，我们访问/processes就当于访问了：localhost:8080/api/processes<br>在index.js中的proxyTable中拦截了/api,并把/api及其前面的所有替换成了target中的内容，因此实际访问Url是<a href="http://xxxxxx-api.xxxxxx.com/v1/api/processes" target="_blank" rel="noopener">http://xxxxxx-api.xxxxxx.com/v1/api/processes</a></p>
-
+        <p>最长摇摆子序列<br>给定数组arr 元素为0-9的数字<br>对于第i位k  若有k&gt;前一位且k&gt;后一位 则这三位 构成一个摇摆序列 例如121<br>求arr最长摇摆子序列的长度<br>例如arr=[1,2,3,4,3,2,3,2]<br>结果是5 其中一个最长摇摆子序列为14232 </p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>使用res保存结果 初始值1<br>什么时候res的值增加?<br>寻找贪心规律 若从第i位开始向后扫描 一直有后一位大于前一位(记为状态’<font color="red">UP</font>‘) 或 小于前一位(记为状态’<font color="red">DOWN</font>‘)<br>则不发生摇摆<br>一旦状态发生了改变则发生了一次摇摆 结果需要增加1<br>初始状态记为’<font color="red">MID</font>‘ 若后一位不等于arr[0]则状态改变 结果加1 否则代表不变 如’111’长度仍为1</p>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> swingSubString(arr)&#123;</span><br><span class="line">	<span class="built_in">let</span> state = <span class="string">'MID'</span></span><br><span class="line">	<span class="built_in">let</span> res = 1</span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> i=1;i&lt;arr.length;i++)&#123;</span><br><span class="line">		switch(state)&#123;</span><br><span class="line">			<span class="keyword">case</span> <span class="string">'MID'</span>:</span><br><span class="line">				<span class="keyword">if</span>(arr[i]&gt;arr[i-1])&#123;</span><br><span class="line">					state = <span class="string">'UP'</span></span><br><span class="line">					res++</span><br><span class="line">				&#125;<span class="keyword">else</span> <span class="keyword">if</span>(arr[i]&lt;arr[i-1])&#123;</span><br><span class="line">					state = <span class="string">'DOWN'</span></span><br><span class="line">					res++</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="built_in">break</span></span><br><span class="line">			<span class="keyword">case</span> <span class="string">'UP'</span>:</span><br><span class="line">				<span class="keyword">if</span>(arr[i]&gt;=arr[i-1])&#123;</span><br><span class="line"></span><br><span class="line">				&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">					res++</span><br><span class="line">					state = <span class="string">'DOWN'</span></span><br><span class="line">				&#125;</span><br><span class="line">				<span class="built_in">break</span></span><br><span class="line">			<span class="keyword">case</span> <span class="string">'DOWN'</span>:</span><br><span class="line">				<span class="keyword">if</span>(arr[i]&gt;=arr[i-1])&#123;</span><br><span class="line">					res++</span><br><span class="line">					state = <span class="string">'UP'</span></span><br><span class="line">				&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">					</span><br><span class="line">				&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/vue-cors/" data-id="cjxodhbf5000li47ke7c3yqq6" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-firstblog" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/28/firstblog/" class="article-date">
-  <time datetime="2019-03-28T07:15:13.096Z" itemprop="datePublished">2019-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/28/firstblog/">博客搭建</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> <a href="https://www.cnblogs.com/trista222/p/8017300.html" target="_blank" rel="noopener">参考教程</a><br> <a href="https://yyyyyyuanhust.github.io/" target="_blank" rel="noopener">本站地址</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/firstblog/" data-id="cjxodhbdu0002i47krnpgxzm9" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/28/hello-world/" class="article-date">
-  <time datetime="2019-03-28T07:03:41.345Z" itemprop="datePublished">2019-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/28/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/hello-world/" data-id="cjxodhbdy0004i47k09p4xzzb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/22/algorithm-swingSubString/" data-id="cjy6z9bpd0008u87km2dtdfq7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -843,6 +664,11 @@ console.log(arr)//1,2,3,4,5
 
   
 
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
 
 </section>
         
@@ -852,7 +678,7 @@ console.log(arr)//1,2,3,4,5
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/移动端/">移动端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
     </div>
   </div>
 
@@ -867,7 +693,7 @@ console.log(arr)//1,2,3,4,5
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
     </div>
   </div>
 
@@ -880,23 +706,23 @@ console.log(arr)//1,2,3,4,5
       <ul>
         
           <li>
-            <a href="/2019/05/01/algorithm-windowString/">窗口最短连续字符串</a>
+            <a href="/2019/07/14/vue-MVVM/">关于vue里的MVVM</a>
           </li>
         
           <li>
-            <a href="/2019/04/07/js-closure/">闭包</a>
+            <a href="/2019/07/13/vue-router/">前端路由</a>
           </li>
         
           <li>
-            <a href="/2019/04/03/js-prototype/">原型</a>
+            <a href="/2019/07/13/algorithm-sqrtNumberGame/">数字游戏</a>
           </li>
         
           <li>
-            <a href="/2019/04/03/js-function/">函数</a>
+            <a href="/2019/07/11/front-vdom/">Virtual DOM</a>
           </li>
         
           <li>
-            <a href="/2019/04/02/js-context/">变量提升、执行上下文、作用域</a>
+            <a href="/2019/07/09/net-https/">HTTPS</a>
           </li>
         
       </ul>

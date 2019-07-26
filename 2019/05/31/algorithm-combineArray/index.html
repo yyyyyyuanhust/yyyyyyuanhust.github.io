@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>组合数组元素 | 菜鸟每天都要写博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="组合数组元素给定二维数组 从每一项抽取一个组合成为字符串 求所有字符串的组合例如12输入 [[&amp;apos;Allen&amp;apos;,&amp;apos;Tommy&amp;apos;],[&amp;apos;Like&amp;apos;],[&amp;apos;Apple&amp;apos;,&amp;apos;Banana&amp;apos;]]输出 [&amp;apos;AllenLikeApple&amp;apos;,&amp;apos;AllenLikeBanana&amp;apos;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组合数组元素">
+<meta property="og:url" content="http://yoursite.com/2019/05/31/algorithm-combineArray/index.html">
+<meta property="og:site_name" content="菜鸟每天都要写博客">
+<meta property="og:description" content="组合数组元素给定二维数组 从每一项抽取一个组合成为字符串 求所有字符串的组合例如12输入 [[&amp;apos;Allen&amp;apos;,&amp;apos;Tommy&amp;apos;],[&amp;apos;Like&amp;apos;],[&amp;apos;Apple&amp;apos;,&amp;apos;Banana&amp;apos;]]输出 [&amp;apos;AllenLikeApple&amp;apos;,&amp;apos;AllenLikeBanana&amp;apos;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:updated_time" content="2019-07-09T10:19:21.695Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="组合数组元素">
+<meta name="twitter:description" content="组合数组元素给定二维数组 从每一项抽取一个组合成为字符串 求所有字符串的组合例如12输入 [[&amp;apos;Allen&amp;apos;,&amp;apos;Tommy&amp;apos;],[&amp;apos;Like&amp;apos;],[&amp;apos;Apple&amp;apos;,&amp;apos;Banana&amp;apos;]]输出 [&amp;apos;AllenLikeApple&amp;apos;,&amp;apos;AllenLikeBanana&amp;apos;">
+  
+    <link rel="alternate" href="/atom.xml" title="菜鸟每天都要写博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟每天都要写博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-algorithm-combineArray" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/31/algorithm-combineArray/" class="article-date">
+  <time datetime="2019-05-31T13:21:42.000Z" itemprop="datePublished">2019-05-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      组合数组元素
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>组合数组元素<br>给定二维数组 从每一项抽取一个组合成为字符串 求所有字符串的组合<br>例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入 [[&apos;Allen&apos;,&apos;Tommy&apos;],[&apos;Like&apos;],[&apos;Apple&apos;,&apos;Banana&apos;]]</span><br><span class="line">输出 [&apos;AllenLikeApple&apos;,&apos;AllenLikeBanana&apos;,&apos;TommyLikeApple&apos;,&apos;TommyLikeBanana&apos;]</span><br></pre></td></tr></table></figure></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>将每一个结果保存在变量str中 从第一个数组元素出发 向后扫描下一个数组 递归到长度为二维数组的长度 把结果存入结果数组res中</p>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> s(i,str,arr,res) &#123;</span><br><span class="line">	<span class="keyword">if</span>(i==arr.length)&#123;</span><br><span class="line">		res.push(str)</span><br><span class="line">		<span class="built_in">return</span> </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="built_in">let</span> j <span class="keyword">in</span> arr[i]) &#123;</span><br><span class="line">		<span class="built_in">let</span> current = str</span><br><span class="line">		current+=arr[i][j]</span><br><span class="line">		s(i+1,current,arr,res)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> combineArrayElement(arr)&#123;</span><br><span class="line">	<span class="built_in">let</span> res = []</span><br><span class="line">	<span class="keyword">if</span>(!arr.length)&#123;</span><br><span class="line">		<span class="built_in">return</span> -1</span><br><span class="line">	&#125;</span><br><span class="line">	arr[0].forEach((value,index)=&gt;&#123;</span><br><span class="line">		s(1,value,arr,res)</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="built_in">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/05/31/algorithm-combineArray/" data-id="cjy6z9bos0002u87kjqx2989c" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/11/webpack/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          webpack
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/05/22/algorithm-swingSubString/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">最长摇摆子序列</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/移动端/">移动端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/14/vue-MVVM/">关于vue里的MVVM</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/vue-router/">前端路由</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/algorithm-sqrtNumberGame/">数字游戏</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/11/front-vdom/">Virtual DOM</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/09/net-https/">HTTPS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 yuan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

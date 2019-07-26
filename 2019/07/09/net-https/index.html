@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>HTTPS | 菜鸟每天都要写博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="HTTPShttps = http + ssl (secure socket layer)端口443 解决问题http的明文传输可能被拦截 引起重要信息泄露 加密手段对称加密常用算法:DES 3DES AES原理:使用密钥s加密后必须使用s解密优点:计算量小,加密解密速度较快,适合加密较大的数据缺点:密钥的传输容易泄露 一个用户对应一个密钥 服务器管理麻烦 非对称加密常用算法:RSA原理:有一个公">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTPS">
+<meta property="og:url" content="http://yoursite.com/2019/07/09/net-https/index.html">
+<meta property="og:site_name" content="菜鸟每天都要写博客">
+<meta property="og:description" content="HTTPShttps = http + ssl (secure socket layer)端口443 解决问题http的明文传输可能被拦截 引起重要信息泄露 加密手段对称加密常用算法:DES 3DES AES原理:使用密钥s加密后必须使用s解密优点:计算量小,加密解密速度较快,适合加密较大的数据缺点:密钥的传输容易泄露 一个用户对应一个密钥 服务器管理麻烦 非对称加密常用算法:RSA原理:有一个公">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:updated_time" content="2019-07-09T12:07:45.492Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTPS">
+<meta name="twitter:description" content="HTTPShttps = http + ssl (secure socket layer)端口443 解决问题http的明文传输可能被拦截 引起重要信息泄露 加密手段对称加密常用算法:DES 3DES AES原理:使用密钥s加密后必须使用s解密优点:计算量小,加密解密速度较快,适合加密较大的数据缺点:密钥的传输容易泄露 一个用户对应一个密钥 服务器管理麻烦 非对称加密常用算法:RSA原理:有一个公">
+  
+    <link rel="alternate" href="/atom.xml" title="菜鸟每天都要写博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟每天都要写博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-net-https" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/09/net-https/" class="article-date">
+  <time datetime="2019-07-09T08:53:05.000Z" itemprop="datePublished">2019-07-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HTTPS
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>https = http + ssl (secure socket layer)<br>端口443</p>
+<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>http的明文传输可能被拦截 引起重要信息泄露</p>
+<h3 id="加密手段"><a href="#加密手段" class="headerlink" title="加密手段"></a>加密手段</h3><h4 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h4><p>常用算法:DES 3DES AES<br>原理:使用密钥s加密后必须使用s解密<br>优点:计算量小,加密解密速度较快,适合加密较大的数据<br>缺点:密钥的传输容易泄露 一个用户对应一个密钥 服务器管理麻烦</p>
+<h4 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h4><p>常用算法:RSA<br>原理:有一个公钥(public key)和一个私钥(private key),由加密算法生成.公钥加密只能私钥解密,私钥加密只能公钥解密<br>服务器保存了公钥和私钥,将公钥传递给客户端,客户端使用公钥加密后传递数据发送到服务器,服务器使用私钥解密<br>优点:加密解密使用不用钥匙,可以传输公钥,数据传输安全<br>缺点:计算量大,加密解密速度较慢</p>
+<h3 id="https加密过程"><a href="#https加密过程" class="headerlink" title="https加密过程"></a>https加密过程</h3><p>https结合了<font color="red">对称解密</font>和<font color="red">非对称加密</font>的优势,对数据进行加密和解密步骤如下<br>1、客户端对服务器发起https请求<br>2、服务器生成一个公钥和一个私钥,将SSL数字证书(包含公钥、服务器相关信息)发送给客户端<br>3、客户端解析SSL数字证书拿到公钥,验证服务器信息,客户端生成一个随机数使用公钥加密<br>4、客户端向服务器传输公钥加密后的随机数<br>5、服务器获取这个公钥加密后的随机数后用<red>私钥</red>解密<br>6、客户端使用随机数作为密钥对数据进行对称加密(此时服务器也知道密钥因此无需传输密钥)后传输<br>7、服务器获取密钥加密的数据 使用随机数密钥解密数据</p>
+<h4 id="CA证书"><a href="#CA证书" class="headerlink" title="CA证书"></a>CA证书</h4><p>域名型(DVSSL)<br>企业型(OVSSL) 百度<br>增强型(EVSSL) 苹果</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/09/net-https/" data-id="cjy6z9bqs0013u87klqjtk08g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/07/11/front-vdom/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Virtual DOM
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/07/01/webapp-rem/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">移动端适配之rem布局</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/移动端/">移动端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/14/vue-MVVM/">关于vue里的MVVM</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/vue-router/">前端路由</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/algorithm-sqrtNumberGame/">数字游戏</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/11/front-vdom/">Virtual DOM</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/09/net-https/">HTTPS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 yuan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
